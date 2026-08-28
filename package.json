@@ -20,8 +20,9 @@
     "lighthouse:simulate": "node scripts/lighthouse.mjs dist",
     "lighthouse:baseline": "node scripts/lighthouse.mjs --baseline --devtools",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist -t",
-    "verify:nav": "node scripts/verify-nav.mjs"
+    "deploy": "node scripts/deploy.mjs",
+    "verify:nav": "node scripts/verify-nav.mjs",
+    "deploy:dry": "node scripts/deploy.mjs --dry-run"
   },
   "dependencies": {
     "@emailjs/browser": "^4.3.3",

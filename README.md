@@ -66,7 +66,15 @@ che il browser scarica davvero.
 
 ```bash
 npm run deploy              # build + push di dist/ sul branch gh-pages
+npm run deploy:dry          # prepara il commit senza inviarlo, per ispezionarlo
 ```
+
+Il deploy passa da `scripts/deploy.mjs` e non dalla CLI di gh-pages: quella
+cancella i file della pubblicazione precedente con un glob privo di `dot: true`,
+quindi i file nascosti sopravvivono. Alla creazione del branch, che avviene con
+`git checkout --orphan`, l'albero di lavoro di `main` viene ereditato e i suoi
+dotfile finivano online. Lo script passa pattern che li includono e, alla fine,
+fallisce se nella pubblicazione compare un file di sorgente o di configurazione.
 
 Richiede una modifica **una tantum** nelle impostazioni del repository:
 *Settings → Pages → Build and deployment → Source: Deploy from a branch →
