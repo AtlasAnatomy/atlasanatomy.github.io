@@ -1,13 +1,12 @@
 # atlasanatomy.github.io
 
-Portfolio di Tommaso Bosi — React + Vite + Tailwind, con una scena three.js
+Portfolio di Tommaso Bosi, React + Vite + Tailwind, con una scena three.js
 nell'hero e una nella sezione contatti. Pubblicato su GitHub Pages.
 
 ## Come è fatto
 
 ```
-index.html            documento d'ingresso: contiene il poster dell'hero, che è
-                      l'elemento LCP e non dipende dal bundle
+index.html            documento d'ingresso
 src/                  sorgente dell'applicazione
   components/         sezioni e canvas 3D
   constants/          tutti i contenuti (esperienze, pubblicazioni, progetti)
@@ -15,10 +14,9 @@ src/                  sorgente dell'applicazione
 public/               file serviti così come sono, con URL stabile
   models/*.glb        modelli 3D compressi con Draco
   fonts/*.woff2       Poppins in locale
-  hero-poster*.webp   render statici del modello dell'hero
   herobg.webp         sfondo dell'hero (preloadato: è l'elemento LCP)
 scripts/              pipeline degli asset e verifiche
-desktop_pc/, rocket/  modelli sorgente non compressi — NON pubblicati,
+desktop_pc/, rocket/  modelli sorgente non compressi, NON pubblicati,
                       servono solo a rigenerare i .glb
 ```
 
@@ -29,24 +27,35 @@ npm install
 npm run dev
 ```
 
+Apre `http://localhost:5173` con ricarica a caldo: si salva un file e la pagina
+si aggiorna da sola, senza ricompilare. È il modo per provare una modifica.
+
+Dove mettere le mani:
+
+| Cosa cambiare | File |
+| --- | --- |
+| Testi, esperienze, pubblicazioni, progetti, premi | `src/constants/index.js` |
+| Titolo della scheda del browser, descrizione, anteprima social | `index.html` |
+| Colori e caratteri | `tailwind.config.js` |
+| Dimensioni dei titoli | `src/styles.js` |
+| Stili delle card, del loader, delle superfici | `src/index.css` |
+| Ordine delle sezioni | `src/App.jsx` |
+
+Quasi tutti i contenuti stanno in `src/constants/index.js`: per aggiornare il CV
+di solito basta quel file.
+
 ## Pipeline degli asset
 
-I file in `public/models`, `public/fonts` e i poster sono **generati**. Vanno
-rifatti solo se cambiano i modelli sorgente, le immagini in `src/assets` o la
-posa della camera in `src/components/canvas/Computers.jsx`.
+I file in `public/models`, `public/fonts` e `public/herobg.webp` sono
+**generati**. Vanno rifatti solo se cambiano i modelli sorgente o le immagini
+in `src/assets`.
 
 ```bash
 npm run assets              # tutto quanto
 npm run assets:models       # desktop_pc + rocket -> .glb Draco   (70,7 MB -> 1,5 MB)
 npm run assets:images       # PNG -> WebP dimensionati            (21,7 MB -> 0,6 MB)
-npm run assets:poster       # render dei poster dell'hero
 npm run assets:fonts        # scarica i pesi di Poppins usati
 ```
-
-> La posa del modello dell'hero è definita due volte: in `POSE` dentro
-> `src/components/canvas/Computers.jsx` e in `VARIANTS` dentro
-> `scripts/render-poster.mjs`. Devono restare allineate, altrimenti il modello
-> salta nel momento in cui il canvas subentra al poster.
 
 ## Verifiche
 
@@ -59,14 +68,22 @@ npm run lighthouse:simulate # Lighthouse mobile, throttling simulato (come PageS
 ```
 
 Il server di prova usato dalle verifiche comprime in gzip i formati testuali,
-come fa GitHub Pages: senza, si misurerebbero 182 kB di bundle invece dei ~58
+come fa GitHub Pages: senza, si misurerebbero 200 kB di bundle invece dei ~63
 che il browser scarica davvero.
 
 ## Pubblicazione
 
 ```bash
 npm run deploy              # build + push di dist/ sul branch gh-pages
+npm run deploy:dry          # prepara il commit senza inviarlo, per ispezionarlo
 ```
+
+Il deploy passa da `scripts/deploy.mjs` e non dalla CLI di gh-pages: quella
+cancella i file della pubblicazione precedente con un glob privo di `dot: true`,
+quindi i file nascosti sopravvivono. Alla creazione del branch, che avviene con
+`git checkout --orphan`, l'albero di lavoro di `main` viene ereditato e i suoi
+dotfile finivano online. Lo script passa pattern che li includono e, alla fine,
+fallisce se nella pubblicazione compare un file di sorgente o di configurazione.
 
 Richiede una modifica **una tantum** nelle impostazioni del repository:
 *Settings → Pages → Build and deployment → Source: Deploy from a branch →

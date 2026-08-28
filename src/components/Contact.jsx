@@ -22,7 +22,7 @@ const Contact = () => {
   const formRef = useRef();
   const [form, setForm] = useState({ name: '', email: '', message: '' });
   const [loading, setLoading] = useState(false);
-  // 'idle' | 'sent' | 'error' — sostituisce le due alert() bloccanti.
+  // 'idle' | 'sent' | 'error'. Sostituisce le due alert() bloccanti.
   const [status, setStatus] = useState('idle');
 
   const [rocketRef, showRocket] = useDeferredMount({ rootMargin: '300px' });
@@ -73,7 +73,7 @@ const Contact = () => {
         <h2 className={`${styles.sectionHeadText} mt-3`}>Contact.</h2>
 
         <p className="mt-4 text-secondary text-[15px] leading-relaxed">
-          Research collaborations, optimization work, or teaching — write to me and I will get back
+          Research collaborations, optimization work, or teaching: write to me and I will get back
           to you.
         </p>
 
@@ -130,7 +130,7 @@ const Contact = () => {
 
             {/* aria-live: chi usa uno screen reader sente l'esito senza doverlo cercare. */}
             <p aria-live="polite" className="text-[14px]">
-              {status === 'sent' && <span className="text-[#38ef7d]">Thanks — I will get back to you.</span>}
+              {status === 'sent' && <span className="text-[#38ef7d]">Thanks, I will get back to you.</span>}
               {status === 'error' && (
                 <span className="text-[#fc6767]">
                   That did not go through. Email me directly at bositommaso13@gmail.com.

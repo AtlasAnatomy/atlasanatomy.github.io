@@ -1,70 +1,24 @@
-import { Suspense, useCallback, useEffect, useState } from 'react';
+import { Suspense, useCallback, useState } from 'react';
 
 import { styles } from '../styles';
 import { ComputersCanvas } from './canvas';
 import { useDeferredMount, usePrefersReducedMotion } from '../hooks/useDeferredMount';
+import coffeeCup from '../assets/coffee-cup.webp';
 
 /**
  * L'hero.
  *
- * L'LCP è il poster: un WebP di 40 KB già presente nell'HTML come preload, che
- * si dipinge senza aspettare React, three o il modello. Il canvas WebGL si monta
- * dopo, sopra la stessa area, e il poster sfuma via solo quando il modello è
- * davvero in scena. Prima il primo paint restava bloccato dietro 15 MB di gltf.
- *
- * Su connessioni lente o con risparmio dati attivo il 3D non parte da solo:
- * resta il poster con un comando esplicito per caricarlo.
+ * Al posto del modello, finché non è pronto, gira la tazzina: nessun poster,
+ * nessuno screenshot statico da sostituire. Il canvas si monta dopo l'evento
+ * load, così i circa 800 kB fra three, fiber e drei non si contendono la banda
+ * con il CSS mentre la pagina deve ancora dipingersi la prima volta.
  */
 const Hero = () => {
   const reducedMotion = usePrefersReducedMotion();
-  const [stageRef, canMount] = useDeferredMount({
-    rootMargin: '0px',
-    waitForIdle: true,
-    waitForInteraction: true,
-  });
-
+  const [stageRef, canMount] = useDeferredMount({ rootMargin: '0px', waitForIdle: true });
   const [modelReady, setModelReady] = useState(false);
-  const [userRequested, setUserRequested] = useState(false);
-  const [saveData, setSaveData] = useState(false);
-
-  useEffect(() => {
-    // Network Information API: assente su Safari e Firefox, quindi il default
-    // è "connessione normale" e il 3D parte da solo.
-    const connection = navigator.connection;
-    if (!connection) return undefined;
-
-    const check = () => setSaveData(Boolean(connection.saveData) || /2g/.test(connection.effectiveType ?? ''));
-    check();
-
-    connection.addEventListener?.('change', check);
-    return () => connection.removeEventListener?.('change', check);
-  }, []);
 
   const onModelReady = useCallback(() => setModelReady(true), []);
-
-  // Il poster sta in index.html e resta lì: qui si comanda solo la dissolvenza,
-  // quando il modello è in scena e può prenderne il posto.
-  useEffect(() => {
-    const poster = document.getElementById('boot-hero');
-    if (!poster) return undefined;
-
-    poster.style.opacity = modelReady ? '0' : '1';
-
-    // A dissolvenza finita esce dall'albero di accessibilità e dal compositing;
-    // se il canvas venisse smontato, tornerebbe visibile.
-    if (!modelReady) {
-      poster.style.visibility = 'visible';
-      return undefined;
-    }
-
-    const timer = window.setTimeout(() => {
-      poster.style.visibility = 'hidden';
-    }, 700);
-    return () => window.clearTimeout(timer);
-  }, [modelReady]);
-
-  const holdBack = saveData && !userRequested;
-  const showCanvas = canMount && !holdBack;
 
   return (
     <section className="hero-section relative w-full">
@@ -91,28 +45,30 @@ const Hero = () => {
       </div>
 
       <div ref={stageRef} className="hero-stage">
-        {showCanvas && (
-          <div
-            className="hero-layer"
-            style={{ opacity: modelReady ? 1 : 0 }}
-            // Finché è invisibile non deve intercettare il trascinamento.
-            aria-hidden="true"
-          >
+        {canMount && (
+          <div className="hero-layer" style={{ opacity: modelReady ? 1 : 0 }} aria-hidden="true">
             <Suspense fallback={null}>
               <ComputersCanvas onModelReady={onModelReady} />
             </Suspense>
           </div>
         )}
 
-        {holdBack && (
-          <div className="absolute inset-x-0 bottom-24 flex justify-center px-6">
-            <button
-              type="button"
-              onClick={() => setUserRequested(true)}
-              className="surface-chip min-h-[44px] px-5 py-3 text-[14px] font-medium text-white-100 rounded-full"
-            >
-              Load the interactive 3D scene
-            </button>
+        {/* La tazzina resta finché il modello non è in scena. Sta nel DOM, non
+            dentro il canvas: deve girare anche prima che three sia scaricato. */}
+        {!modelReady && (
+          <div
+            className="hero-layer flex items-center justify-center"
+            role="status"
+            aria-live="polite"
+          >
+            <img
+              src={coffeeCup}
+              alt=""
+              width="56"
+              height="56"
+              className="coffee-cup-loader h-14 w-14"
+            />
+            <span className="sr-only">Loading the 3D scene</span>
           </div>
         )}
       </div>
@@ -123,8 +79,6 @@ const Hero = () => {
           aria-label="Skip to the introduction"
           className="grid place-items-center w-[44px] h-[68px] rounded-3xl border-4 border-secondary/70 hover:border-accent transition-colors duration-300"
         >
-          {/* Animato in CSS e non con framer-motion: è l'unico movimento
-              sopra la piega, e tenerlo qui toglie 119 kB dal percorso critico. */}
           <span className={`block w-3 h-3 rounded-full bg-secondary ${reducedMotion ? '' : 'scroll-dot'}`} />
         </a>
       </div>

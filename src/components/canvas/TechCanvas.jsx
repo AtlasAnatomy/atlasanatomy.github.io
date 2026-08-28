@@ -11,16 +11,23 @@ import { usePrefersReducedMotion } from '../../hooks/useDeferredMount';
  * Prima ogni icona aveva il proprio <Canvas>: dodici contesti WebGL, dodici cicli
  * di render e dodici copie dello stato di three, per una fila di icone decorative.
  * I browser ne concedono circa sedici per pagina, quindi la sezione da sola
- * consumava quasi l'intero budget e faceva scattare la perdita dei contesti
- * appena si aggiungevano gli altri canvas della pagina.
+ * consumava quasi l'intero budget.
  *
- * Qui c'è una camera ortografica sola: con zoom = CELL_PX / CELL_UNITS una unità
- * di mondo corrisponde a un numero fisso di pixel, e la griglia 3D si allinea
- * esattamente alla griglia CSS del contenitore.
+ * La camera è ortografica: con zoom = cellPx / CELL_UNITS una unità di mondo
+ * vale un numero fisso di pixel, e la griglia 3D si allinea a quella CSS.
  */
 
 const CELL_UNITS = 2; // lato della cella in unità di mondo
-const BALL_SCALE = 0.85;
+const BALL_SCALE = 0.8;
+
+/*
+ * Margine attorno alla griglia, in frazione di cella.
+ *
+ * Il canvas era grande esattamente quanto la griglia, quindi le sfere delle
+ * colonne esterne venivano tagliate dal bordo: <Float> le sposta di continuo, e
+ * un raggio di 0,8 unità più l'oscillazione supera la mezza cella disponibile.
+ */
+const PAD_CELLS = 0.3;
 
 const Ball = ({ imgUrl, position, animate }) => {
   const [decal] = useTexture([imgUrl]);
@@ -36,7 +43,7 @@ const Ball = ({ imgUrl, position, animate }) => {
   // Float anima il proprio gruppo, quindi porta lui la posizione; senza
   // animazione la stessa posizione va sul group che lo sostituisce.
   return animate ? (
-    <Float speed={1.75} rotationIntensity={1} floatIntensity={2} position={position}>
+    <Float speed={1.75} rotationIntensity={1} floatIntensity={1.4} position={position}>
       {mesh}
     </Float>
   ) : (
@@ -67,6 +74,8 @@ const TechCanvas = ({ technologies, columns, cellPx }) => {
     [technologies, columns, rows],
   );
 
+  const pad = 2 * PAD_CELLS * cellPx;
+
   return (
     <Canvas
       orthographic
@@ -76,7 +85,7 @@ const TechCanvas = ({ technologies, columns, cellPx }) => {
       frameloop={reducedMotion ? 'demand' : 'always'}
       dpr={[1, 1.5]}
       gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
-      style={{ width: columns * cellPx, height: rows * cellPx }}
+      style={{ width: columns * cellPx + pad, height: rows * cellPx + pad }}
       aria-hidden="true"
     >
       <ambientLight intensity={0.25} />

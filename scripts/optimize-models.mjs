@@ -5,7 +5,7 @@
  *   desktop_pc/scene.gltf  ~15.5 MB  (1.8 MB json + 4.3 MB bin + 9.4 MB in 51 texture)
  *   rocket/scene.gltf      ~58.3 MB  (geometria f32 non compressa, nessuna texture)
  *
- * Output pubblicati in public/models/*.glb — singolo file, Draco + texture WebP.
+ * Output pubblicati in public/models/*.glb: un file solo, Draco + texture WebP.
  *
  * Le texture vengono ricodificate a mano con sharp invece che con textureCompress():
  * il vips incluso in @gltf-transform/cli fallisce su alcune texture di questo

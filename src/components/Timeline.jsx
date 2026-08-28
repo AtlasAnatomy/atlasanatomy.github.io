@@ -20,8 +20,8 @@ import { fadeIn } from '../utils/motion';
  *
  * I loghi si dividono in due famiglie. Quelli con sfondo trasparente stanno
  * dentro il cerchio, appoggiati sul colore dichiarato da `iconBg`. Quelli con
- * uno sfondo proprio e opaco — bianco per Agenas, Oneskill e Formalba, nero per
- * PuntoEduca — riempiono invece l'intera pastiglia: messi al centro di un cerchio
+ * uno sfondo proprio e opaco (bianco per Agenas, Oneskill e Formalba, nero per
+ * PuntoEduca) riempiono invece l'intera pastiglia: messi al centro di un cerchio
  * colorato mostrerebbero il loro quadrato di sfondo ritagliato dentro il cerchio.
  * A distinguerli è `iconFit: 'cover'` nei dati.
  */
@@ -103,7 +103,7 @@ const TimelineItem = ({ item, index, isLast }) => (
 );
 
 const Timeline = ({ items }) => (
-  <ul className="mt-14 sm:pl-8 max-w-3xl">
+  <ul className="mt-14 max-w-3xl">
     {items.map((item, index) => (
       <TimelineItem
         key={`${item.title}-${item.date}`}

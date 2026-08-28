@@ -81,9 +81,9 @@ for (const viewport of VIEWPORTS) {
   page.on('console', (m) => {
     if (m.type() === 'error') consoleErrors.push(m.text());
   });
-  page.on('requestfailed', (r) => failedRequests.push(`${r.url()} — ${r.failure()?.errorText}`));
+  page.on('requestfailed', (r) => failedRequests.push(`${r.url()}: ${r.failure()?.errorText}`));
   page.on('response', (r) => {
-    if (r.status() >= 400) failedRequests.push(`${r.url()} — HTTP ${r.status()}`);
+    if (r.status() >= 400) failedRequests.push(`${r.url()}: HTTP ${r.status()}`);
   });
 
   await page.goto(base, { waitUntil: 'networkidle', timeout: 60_000 });
@@ -125,7 +125,7 @@ for (const viewport of VIEWPORTS) {
     (ids) => ids.filter((id) => !document.getElementById(id)),
     REQUIRED_IDS,
   );
-  note(missing.length === 0, `sezioni presenti${missing.length ? ` — mancano: ${missing.join(', ')}` : ''}`);
+  note(missing.length === 0, `sezioni presenti${missing.length ? `, mancano: ${missing.join(', ')}` : ''}`);
 
   // Area toccabile: si controllano solo gli elementi realmente visibili.
   const smallTargets = await page.evaluate(() => {
@@ -140,7 +140,7 @@ for (const viewport of VIEWPORTS) {
     }
     return out;
   });
-  note(smallTargets.length === 0, `aree toccabili >= 44px${smallTargets.length ? ` — sotto misura: ${smallTargets.join(' | ')}` : ''}`);
+  note(smallTargets.length === 0, `aree toccabili >= 44px${smallTargets.length ? `, sotto misura: ${smallTargets.join(' | ')}` : ''}`);
 
   // Gli avvisi di React su chiavi/prop sono rumore noto di drei: si filtrano no.
   note(consoleErrors.length === 0, `console pulita${consoleErrors.length ? `:\n          ${consoleErrors.slice(0, 4).join('\n          ')}` : ''}`);
@@ -218,7 +218,7 @@ for (const href of external) {
       unverified++;
       console.log(`    --    bloccato  ${href}  (${err.message})`);
     } else {
-      note(false, `errore rete  ${href} — ${err.message}`);
+      note(false, `errore rete  ${href}: ${err.message}`);
     }
   }
 }

@@ -114,10 +114,10 @@ const result = await lighthouse(
 );
 
 const { categories, audits } = result.lhr;
-const pct = (c) => (c ? Math.round(c.score * 100) : '—');
+const pct = (c) => (c ? Math.round(c.score * 100) : '-');
 
 const method = devtools ? 'devtools (freno reale)' : 'simulate (lantern)';
-console.log(`\n${baseline ? 'PRIMA (sito pubblicato)' : `DOPO (${root})`} — throttling: ${method}`);
+console.log(`\n${baseline ? 'PRIMA (sito pubblicato)' : `DOPO (${root})`}, throttling: ${method}`);
 console.log('─'.repeat(52));
 console.log(`Performance      ${String(pct(categories.performance)).padStart(4)}`);
 console.log(`Accessibility    ${String(pct(categories.accessibility)).padStart(4)}`);
@@ -133,7 +133,7 @@ for (const id of [
   'speed-index',
 ]) {
   const audit = audits[id];
-  if (audit) console.log(`${audit.title.padEnd(28)} ${String(audit.displayValue ?? '—').padStart(10)}`);
+  if (audit) console.log(`${audit.title.padEnd(28)} ${String(audit.displayValue ?? '-').padStart(10)}`);
 }
 
 const bytes = audits['total-byte-weight'];
@@ -173,7 +173,7 @@ for (const [name, key] of [['Accessibilità', 'accessibility'], ['Best practices
     .filter((a) => a && a.score !== null && a.score < 1 && a.scoreDisplayMode !== 'notApplicable');
   if (failed.length) {
     console.log(`
-${name} — audit non superati:`);
+${name}, audit non superati:`);
     for (const a of failed) console.log(`  - ${a.title}${a.displayValue ? ` (${a.displayValue})` : ''}`);
   }
 }

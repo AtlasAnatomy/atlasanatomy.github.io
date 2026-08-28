@@ -9,10 +9,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "assets": "npm run assets:models && npm run assets:images && npm run assets:poster && npm run assets:fonts",
+    "assets": "npm run assets:models && npm run assets:images && npm run assets:fonts",
     "assets:models": "node scripts/optimize-models.mjs",
     "assets:images": "node scripts/optimize-images.mjs",
-    "assets:poster": "node scripts/render-poster.mjs",
     "assets:fonts": "node scripts/fetch-fonts.mjs",
     "verify": "node scripts/verify.mjs",
     "verify:shots": "node scripts/verify.mjs --shots",
@@ -20,8 +19,9 @@
     "lighthouse:simulate": "node scripts/lighthouse.mjs dist",
     "lighthouse:baseline": "node scripts/lighthouse.mjs --baseline --devtools",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist -t",
-    "verify:nav": "node scripts/verify-nav.mjs"
+    "deploy": "node scripts/deploy.mjs",
+    "verify:nav": "node scripts/verify-nav.mjs",
+    "deploy:dry": "node scripts/deploy.mjs --dry-run"
   },
   "dependencies": {
     "@emailjs/browser": "^4.3.3",
@@ -31,6 +31,7 @@
     "maath": "^0.10.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-tilt": "^1.0.2",
     "three": "^0.165.0"
   },
   "devDependencies": {

@@ -127,15 +127,14 @@ const Navbar = () => {
           {navLinks.map((link) => (
             <li key={link.id}>
               {/* inline-flex + min-h-[44px] porta l'area cliccabile alla misura
-                  minima: il solo testo misurava 39x37. */}
+                  minima: il solo testo misurava 39x37. La voce attiva si
+                  distingue dal colore, senza sottolineature. */}
               <a
                 href={`#${link.id}`}
                 aria-current={active === link.id ? 'true' : undefined}
                 className={`${
                   active === link.id ? 'text-white' : 'text-secondary'
-                } hover:text-white text-[15px] font-medium transition-colors duration-200 relative inline-flex items-center min-h-[44px] after:absolute after:left-0 after:bottom-2.5 after:h-px after:bg-accent after:transition-all after:duration-300 ${
-                  active === link.id ? 'after:w-full' : 'after:w-0 hover:after:w-full'
-                }`}
+                } inline-flex min-h-[44px] items-center text-[15px] font-medium transition-colors duration-200 hover:text-white`}
               >
                 {link.title}
               </a>

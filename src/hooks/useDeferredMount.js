@@ -1,8 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 
-// Segnali che indicano una persona presente e attiva sulla pagina.
-const INTERACTION_EVENTS = ['pointerdown', 'pointermove', 'wheel', 'touchstart', 'keydown', 'scroll'];
-
 /**
  * Dice se il contenuto pesante può essere montato.
  *
@@ -14,23 +11,14 @@ const INTERACTION_EVENTS = ['pointerdown', 'pointermove', 'wheel', 'touchstart',
  * @param {object}  options
  * @param {string}  options.rootMargin  anticipo rispetto al bordo del viewport.
  * @param {boolean} options.waitForIdle attende il caricamento completo e la quiete.
- * @param {boolean} options.waitForInteraction attende un primo gesto dell'utente.
  * @returns {[React.RefObject, boolean]} il ref da agganciare e il via libera.
  */
-export function useDeferredMount({
-  rootMargin = '200px',
-  waitForIdle = false,
-  waitForInteraction = false,
-} = {}) {
+export function useDeferredMount({ rootMargin = '200px', waitForIdle = false } = {}) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
   const [idle, setIdle] = useState(!waitForIdle);
-  const [engaged, setEngaged] = useState(!waitForInteraction);
 
   useEffect(() => {
-    const node = ref.current;
-    if (!node) return undefined;
-
     // Senza IntersectionObserver si monta subito: meglio pesante che assente.
     if (typeof IntersectionObserver === 'undefined') {
       setVisible(true);
@@ -47,8 +35,25 @@ export function useDeferredMount({
       { rootMargin },
     );
 
-    observer.observe(node);
-    return () => observer.disconnect();
+    // Il nodo può non esistere ancora: chi usa questo hook a volte aggancia il
+    // ref a un elemento che compare più tardi (le sezioni sotto la piega si
+    // montano dopo l'evento load). Agganciarsi una volta sola al primo effetto
+    // significava, in quel caso, non osservare nulla e non montare mai: era il
+    // motivo per cui il cielo stellato dei contatti non compariva più.
+    let frame = 0;
+    const attach = () => {
+      if (ref.current) {
+        observer.observe(ref.current);
+        return;
+      }
+      frame = requestAnimationFrame(attach);
+    };
+    attach();
+
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+    };
   }, [rootMargin]);
 
   useEffect(() => {
@@ -59,7 +64,7 @@ export function useDeferredMount({
     let cancelled = false;
 
     // Il solo requestIdleCallback scattava già a una cinquantina di millisecondi,
-    // e i chunk 3D — poco più di un megabyte fra three, fiber e drei — partivano
+    // e i chunk 3D, poco più di un megabyte fra three, fiber e drei, partivano
     // in concorrenza con il CSS e con il poster. Su una 4G lenta si spartiscono la
     // banda, e il primo paint slittava di secondi. Aspettare `load` significa che
     // il download comincia quando ciò che serve a vedere la pagina è già arrivato.
@@ -90,28 +95,7 @@ export function useDeferredMount({
     };
   }, [waitForIdle]);
 
-  // La scena 3D dell'hero pesa circa 800 kB fra three, fiber e drei, più il
-  // modello. È un arricchimento: il poster mostra già la stessa inquadratura.
-  // Farla partire al primo gesto — un movimento del puntatore, uno scorrimento,
-  // un tasto — significa che chi apre e chiude la pagina non la scarica mai,
-  // e che chi resta la vede comparire entro pochi istanti. È lo stesso schema
-  // che si usa per gli embed pesanti: prima la facciata, poi il contenuto vero.
-  useEffect(() => {
-    if (!waitForInteraction) return undefined;
-
-    const onInteract = () => setEngaged(true);
-    for (const type of INTERACTION_EVENTS) {
-      window.addEventListener(type, onInteract, { once: true, passive: true });
-    }
-
-    return () => {
-      for (const type of INTERACTION_EVENTS) {
-        window.removeEventListener(type, onInteract);
-      }
-    };
-  }, [waitForInteraction]);
-
-  return [ref, visible && idle && engaged];
+  return [ref, visible && idle];
 }
 
 /** Rispetta la preferenza di sistema per il movimento ridotto. */

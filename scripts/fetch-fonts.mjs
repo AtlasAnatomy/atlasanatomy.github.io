@@ -58,7 +58,7 @@ const fontFaceCss = faces
   src: url("/fonts/${file}") format("woff2");
 }`).join('\n\n');
 
-await writeFile('src/fonts.css', `/* Generato da scripts/fetch-fonts.mjs — non modificare a mano. */\n\n${fontFaceCss}\n`);
+await writeFile('src/fonts.css', `/* Generato da scripts/fetch-fonts.mjs. Non modificare a mano. */\n\n${fontFaceCss}\n`);
 
 const total = faces.reduce((n, f) => n + f.size, 0);
 console.log(`\n${faces.length} pesi, ${(total / 1024).toFixed(1)} KB totali -> public/fonts/ + src/fonts.css`);

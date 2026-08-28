@@ -91,11 +91,11 @@ const skillGroups = [
 
 const experiences = [
   {
-    title: 'Project Manager — Technical Consultant',
-    company_name: 'Agenas — Italian National Agency for Regional Health Services',
+    title: 'Project Manager, Technical Consultant',
+    company_name: 'Agenas, Italian National Agency for Regional Health Services',
     icon: agenas,
     iconFit: 'cover',
-    date: 'Sep 2025 — Present',
+    date: 'Sep 2025 - Present',
     points: [
       'Running technical projects for the national agency that supports Italy\'s regional health services.',
       'Bridging the gap between the technical teams building the systems and the public bodies that have to operate them.',
@@ -106,7 +106,7 @@ const experiences = [
     company_name: 'Oneskill S.r.l.',
     icon: oneskill,
     iconFit: 'cover',
-    date: 'Aug 2025 — Present',
+    date: 'Aug 2025 - Present',
     link: 'https://oneskill4education.com/',
     points: [
       'Co-founded a company building e-learning platforms, websites and web applications for training providers.',
@@ -119,7 +119,7 @@ const experiences = [
     company_name: 'PuntoEduca',
     icon: puntoeduca,
     iconFit: 'cover',
-    date: 'Sep 2025 — Present',
+    date: 'Sep 2025 - Present',
     link: 'https://www.puntoeduca.news/',
     points: [
       'Technical product owner for an editorial product with a registered newsroom.',
@@ -131,7 +131,7 @@ const experiences = [
     company_name: 'Formalba S.r.l.',
     icon: formalba,
     iconFit: 'cover',
-    date: 'Oct 2024 — Present',
+    date: 'Oct 2024 - Present',
     link: 'https://www.formalbaorienta.eu/',
     points: [
       'Design and build e-learning platforms, web applications and websites for vocational training.',
@@ -140,10 +140,10 @@ const experiences = [
   },
   {
     title: 'Innovation Manager',
-    company_name: 'RDC — Research & Development Consulting S.r.l.',
+    company_name: 'RDC, Research & Development Consulting S.r.l.',
     icon: ministero,
     iconBg: '#0066cc',
-    date: 'Oct 2023 — Present',
+    date: 'Oct 2023 - Present',
     points: [
       'Map client processes end to end, then cut the steps that exist only because nobody re-examined them.',
       'Lead digitalisation projects from the process analysis through to the software that replaces the manual work.',
@@ -154,7 +154,7 @@ const experiences = [
     company_name: 'ITS Academy ECO-STEM Generation',
     icon: its,
     iconBg: '#0f766e',
-    date: 'Nov 2023 — Present',
+    date: 'Nov 2023 - Present',
     link: 'https://linktr.ee/itsecostemgeneration',
     points: [
       'Own the teaching programme: course design, quality of delivery, and the assessment that follows.',
@@ -167,7 +167,7 @@ const experiences = [
     company_name: 'Roma Tre University',
     icon: romatre,
     iconBg: '#E6DEDD',
-    date: 'Sep 2022 — Present',
+    date: 'Sep 2022 - Present',
     points: [
       'Won the competitive call for supplementary teaching and tutoring.',
       'Guest lecturer on Public Transport Optimization for the Management and Automation Engineering degree.',
@@ -175,11 +175,11 @@ const experiences = [
     ],
   },
   {
-    title: 'Member — EWG on Sustainable Supply Chains, AIROYoung',
+    title: 'Member of EWG on Sustainable Supply Chains and AIROYoung',
     company_name: 'EURO & AIRO',
     icon: ewg,
     iconBg: '#E6DEDD',
-    date: 'Aug 2020 — Present',
+    date: 'Aug 2020 - Present',
     points: [
       'Speaker and lecturer at EURO and AIRO conferences.',
       'Co-organised the 6th AIROYoung Workshop at the Roma Tre Department of Engineering.',
@@ -190,7 +190,7 @@ const experiences = [
     company_name: 'University of Luxembourg · TU Delft · La Sapienza · Beijing Jiaotong',
     icon: tu,
     iconBg: '#15A3D2',
-    date: '2021 — 2023',
+    date: '2021 - 2023',
     points: [
       'Research visits built around the electric-bus scheduling and rail rescheduling work.',
       'Produced the metaheuristics for mixed-fleet multi-terminal electric bus scheduling, later published in Computers & Industrial Engineering.',
@@ -202,10 +202,10 @@ const experiences = [
     company_name: 'CFL Multimodal & University of Luxembourg',
     icon: cfl,
     iconBg: '#E6DEDD',
-    date: 'Sep 2021 — Jan 2022',
+    date: 'Sep 2021 - Jan 2022',
     points: [
       'Optimisation algorithms for shunting operations at the Bettembourg multimodal terminal.',
-      'Worked on the ANTOINE project (University of Luxembourg — CFL — Luxembourg National Research Fund).',
+      'Worked on the ANTOINE project (University of Luxembourg, CFL, Luxembourg National Research Fund).',
       'Built the event-based simulator used to test shunt-in / shunt-out policies against real terminal data.',
     ],
   },
@@ -214,9 +214,9 @@ const experiences = [
     company_name: 'Trenitalia & La Sapienza',
     icon: trenitalia,
     iconBg: '#E6DEDD',
-    date: 'Sep 2019 — Apr 2020',
+    date: 'Sep 2019 - Apr 2020',
     points: [
-      'Turned train calendar bitmaps into readable descriptions — the text passengers actually see when they check which days a train runs.',
+      'Turned train calendar bitmaps into readable descriptions: the text passengers actually see when they check which days a train runs.',
       'Implemented the heuristics in C and CPLEX; the divide-and-conquer approach holds its runtime as the calendar grows.',
     ],
   },
@@ -225,10 +225,10 @@ const experiences = [
 const educations = [
   {
     title: 'European Ph.D. in Computer Science and Automation',
-    company_name: 'Roma Tre University — Department of Engineering',
+    company_name: 'Roma Tre University, Department of Engineering',
     icon: romatre,
     iconBg: '#E6DEDD',
-    date: 'Oct 2020 — Apr 2024',
+    date: 'Oct 2020 - Apr 2024',
     points: [
       'Elected representative of the doctoral students until October 2023.',
       'Joint work with the University of Luxembourg, TU Delft, La Sapienza and Beijing Jiaotong University.',
@@ -238,10 +238,10 @@ const educations = [
   },
   {
     title: "Master's Degree in Management and Automation Engineering",
-    company_name: 'Roma Tre University — Department of Engineering',
+    company_name: 'Roma Tre University, Department of Engineering',
     icon: romatre,
     iconBg: '#E6DEDD',
-    date: 'Sep 2017 — Jul 2020',
+    date: 'Sep 2017 - Jul 2020',
     points: [
       'Final grade: 108/110.',
       'Thesis: A Fast and Effective Greedy Heuristic for On-line Train Calendars Generation.',
@@ -252,7 +252,7 @@ const educations = [
     company_name: "University of Rome 'Tor Vergata'",
     icon: torvergata,
     iconFit: 'cover',
-    date: '2011 — 2017',
+    date: '2011 - 2017',
     points: [],
   },
 ];
@@ -331,7 +331,7 @@ const featuredPapers = [
   {
     name: 'Freight Delay Prediction',
     description:
-      'Short-term arrival delay prediction for freight rail. LightGBM came out ahead; departure delay, trip distance and train composition carried most of the signal — all three are known before the train leaves.',
+      'Short-term arrival delay prediction for freight rail. LightGBM came out ahead; departure delay, trip distance and train composition carried most of the signal, and all three are known before the train leaves.',
     tags: [
       { name: 'ML', color: 'blue-text-gradient' },
       { name: 'LightGBM', color: 'green-text-gradient' },
@@ -391,7 +391,7 @@ const featuredPapers = [
   {
     name: 'Train Calendar Generation',
     description:
-      'The sentence that tells you which days a train runs is generated from a bitmap. A divide-and-conquer heuristic keeps the runtime flat as the calendar gets more irregular — this was my Master\'s thesis, and it went into production reasoning.',
+      'The sentence that tells you which days a train runs is generated from a bitmap. A divide-and-conquer heuristic keeps the runtime flat as the calendar gets more irregular. This was my Master\'s thesis, and it went into production reasoning.',
     tags: [
       { name: 'OR & NLG', color: 'blue-text-gradient' },
       { name: 'C', color: 'green-text-gradient' },
@@ -406,10 +406,10 @@ const featuredPapers = [
 const projects = [
   {
     name: 'Aspasia',
-    role: 'Product & platform — Oneskill',
+    role: 'Product and platform at Oneskill',
     year: '2025',
     description:
-      'A shared course catalogue for accredited training providers. A company describes what it needs to teach and gets back matching courses from across the network, filtered by area, provider, duration and cost — instead of contacting each provider one at a time.',
+      'A shared course catalogue for accredited training providers. A company describes what it needs to teach and gets back matching courses from across the network, filtered by area, provider, duration and cost, instead of contacting each provider one at a time.',
     highlights: [
       'Shared catalogue across accredited providers',
       'Intake form that matches company needs to providers',
@@ -470,32 +470,32 @@ const testimonials = [
 
 const awards = [
   {
-    title: 'Second place — Sustainable Mobility of People and Goods, Road',
+    title: 'Second place in Sustainable Mobility of People and Goods, Road',
     issuer: 'TRA VISIONS 2024, Young Researcher Competition · Royal Dublin Society',
     year: '2024',
     link: 'https://www.travisions.eu/TRAVisions/young_researcher_competition/',
   },
   {
-    title: 'Top 5 projects — Sustainability, Rail',
+    title: 'Top 5 projects in Sustainability, Rail',
     issuer: 'TRA VISIONS 2022, Young Researcher Competition · Lisbon',
     year: '2022',
   },
   {
-    title: 'EURO & NATCOR bursary — Italian representative',
+    title: 'EURO & NATCOR bursary, Italian representative',
     issuer: "NATCOR 'Multi Criteria Decision Making', University of Portsmouth",
     year: '2022',
   },
   {
-    title: 'EU4EU — European Universities for the EU',
+    title: 'EU4EU, European Universities for the EU',
     issuer: 'Erasmus+ KA1 traineeship mobility, 15 grants awarded',
     year: '2019',
   },
 ];
 
 const certifications = [
-  { title: 'Manager della Transizione Ecologica', issuer: 'EIIS — European Institute of Innovation for Sustainability', year: '2022' },
+  { title: 'Manager della Transizione Ecologica', issuer: 'EIIS, European Institute of Innovation for Sustainability', year: '2022' },
   { title: 'UNI EN ISO 9001:2015 Lead Auditor', issuer: 'CSQA Centro Formazione', year: '2022' },
-  { title: 'PCEP — Certified Entry-Level Python Programmer', issuer: 'Python Institute' },
+  { title: 'PCEP, Certified Entry-Level Python Programmer', issuer: 'Python Institute' },
 ];
 
 const socials = [

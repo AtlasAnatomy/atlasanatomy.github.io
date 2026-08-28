@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
  * Serve a tenere fuori dal percorso critico tutto ciò che sta sotto la piega.
  * React monta i componenti a prescindere dal viewport, quindi le sezioni in
  * lazy() partivano comunque durante il caricamento iniziale: framer-motion e i
- * chunk di sezione — circa 130 kB — si contendevano la banda con il CSS e con
+ * chunk di sezione, circa 130 kB in tutto, si contendevano la banda con il CSS e con
  * il poster dell'hero. Rimandarli a dopo `load` lascia libero il primo paint.
  */
 export function useAfterLoad() {
