@@ -1,30 +1,18 @@
-import { Html, useProgress } from "@react-three/drei";
-import coffeeCupImage from '../assets/coffee-cup.png';
+import { Html, useProgress } from '@react-three/drei';
+import coffeeCup from '../assets/coffee-cup.webp';
 
 const CanvasLoader = () => {
   const { progress } = useProgress();
+
   return (
-    <Html
-      as='div'
-      center
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
-      }}
-    >
-      <img src={coffeeCupImage} alt="Loading..." className="coffee-cup-loader" />
-      <p
-        style={{
-          fontSize: 14,
-          color: "#F1F1F1",
-          fontWeight: 800,
-          marginTop: 40,
-        }}
-      >
-        {progress.toFixed(2)}%
-      </p>
+    <Html as="div" center>
+      <div className="flex flex-col items-center justify-center gap-5" role="status" aria-live="polite">
+        <img src={coffeeCup} alt="" width="50" height="50" className="coffee-cup-loader" />
+        <p className="text-[13px] font-extrabold tracking-[0.18em] text-white-100 tabular-nums">
+          {progress.toFixed(0)}%
+        </p>
+        <span className="sr-only">Loading the 3D scene</span>
+      </div>
     </Html>
   );
 };

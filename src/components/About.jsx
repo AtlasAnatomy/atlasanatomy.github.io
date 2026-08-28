@@ -1,62 +1,68 @@
-import React from "react";
-import {Tilt} from "react-tilt";
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
 
-import { styles } from "../styles";
-import { services } from "../constants";
-import { SectionWrapper } from "../hoc";
-import { fadeIn, textVariant } from "../utils/motion";
+import { services, skillGroups } from '../constants';
+import { SectionWrapper } from '../hoc';
+import { fadeIn } from '../utils/motion';
+import SectionHeading from './SectionHeading';
 
 const ServiceCard = ({ index, title, icon }) => (
-  <Tilt className='xs:w-[250px] w-full'>
-    <motion.div
-      variants={fadeIn("right", "spring", index * 0.5, 0.75)}
-      className='w-full green-pink-gradient p-[1px] rounded-[20px] shadow-card'
-    >
-      <div
-        options={{
-          max: 45,
-          scale: 1,
-          speed: 450,
-        }}
-        className='bg-tertiary rounded-[20px] py-5 px-12 min-h-[280px] flex justify-evenly items-center flex-col'
-      >
-        <img
-          src={icon}
-          alt='web-development'
-          className='w-16 h-16 object-contain'
-        />
-
-        <h3 className='text-white text-[20px] font-bold text-center'>
-          {title}
-        </h3>
-      </div>
-    </motion.div>
-  </Tilt>
+  <motion.div
+    variants={fadeIn('up', 'spring', index * 0.12, 0.6)}
+    className="surface-panel flex items-center gap-4 p-5 sm:flex-col sm:items-start sm:gap-6 sm:p-6 sm:min-h-[168px]"
+  >
+    <img src={icon} alt="" width="40" height="40" className="w-10 h-10 object-contain shrink-0" />
+    <h3 className="text-white text-[16px] sm:text-[18px] font-bold leading-snug sm:mt-auto">{title}</h3>
+  </motion.div>
 );
 
-const About = () => {
-  return (
-    <>
-      <motion.div variants={textVariant()}>
-        <p className={styles.sectionSubText}>Introduction</p>
-        <h2 className={styles.sectionHeadText}>Overview.</h2>
-      </motion.div>
+const About = () => (
+  <>
+    <SectionHeading eyebrow="Introduction" title="Overview." />
 
-      <motion.p
-        variants={fadeIn("", "", 0.1, 1)}
-        className='mt-4 text-secondary text-[17px] max-w-3xl leading-[30px]' style={{ textAlign: 'justify' }}
-      >
-        I hold a Ph.D. in Computer Science and Automation and had the privilege to represent Ph.D. students at the Department of Engineering, University of 'Roma Tre'. My academic journey began with a master's degree in Management and Automation Engineering. Focused on applying Operations Research, Machine Learning and Big Data in sustainable transportation systems, I also explore areas like ICT system Management and Fuzzy Logic. My aim is simple: analyze transport scenarios to promote sustainable mobility, one step at a time.
-      </motion.p>
+    <motion.div variants={fadeIn('', '', 0.1, 1)} className="mt-6 sm:pl-8 max-w-3xl space-y-5">
+      <p className="text-secondary leading-[1.8] text-[clamp(0.95rem,1.7vw,1.0625rem)]">
+        I hold a European Ph.D. in Computer Science and Automation from Roma Tre, where I also
+        represented the doctoral students until October 2023. My work sits between operations
+        research and software: I write the models and the algorithms, and then I write the thing
+        that runs them.
+      </p>
+      <p className="text-secondary leading-[1.8] text-[clamp(0.95rem,1.7vw,1.0625rem)]">
+        Most of it has been about moving people and freight — shunting yards for CFL in Luxembourg,
+        train calendars for Trenitalia, electric bus fleets, metro rescheduling. Thirteen papers
+        came out of that, with groups in Luxembourg, Delft, Rome and Beijing. Alongside the
+        research I build the systems that put it to use: e-learning platforms, web applications,
+        and lately retrieval-augmented chatbots running on small models on private servers, where
+        the data cannot leave the building.
+      </p>
+      <p className="text-secondary leading-[1.8] text-[clamp(0.95rem,1.7vw,1.0625rem)]">
+        I teach as well — Computer Science and Mathematics at ITS ECO-STEM Generation, and Public
+        Transport Optimization as a guest lecturer at Roma Tre.
+      </p>
+    </motion.div>
 
-      <div className='mt-20 flex flex-wrap gap-10'>
-        {services.map((service, index) => (
-          <ServiceCard key={service.title} index={index} {...service} />
-        ))}
-      </div>
-    </>
-  );
-};
+    <div className="mt-14 sm:pl-8 grid grid-cols-2 lg:grid-cols-4 gap-4">
+      {services.map((service, index) => (
+        <ServiceCard key={service.title} index={index} {...service} />
+      ))}
+    </div>
 
-export default SectionWrapper(About, "about");
+    <div className="mt-14 sm:pl-8 grid gap-8 sm:grid-cols-2">
+      {skillGroups.map((group, index) => (
+        <motion.div key={group.label} variants={fadeIn('up', 'spring', index * 0.1, 0.6)}>
+          <h3 className="text-white text-[13px] font-semibold uppercase tracking-[0.18em]">
+            {group.label}
+          </h3>
+          <ul className="mt-4 flex flex-wrap gap-2">
+            {group.items.map((item) => (
+              <li key={item} className="surface-chip rounded-full px-3 py-1.5 text-[13px] text-white-100">
+                {item}
+              </li>
+            ))}
+          </ul>
+        </motion.div>
+      ))}
+    </div>
+  </>
+);
+
+export default SectionWrapper(About, 'about');

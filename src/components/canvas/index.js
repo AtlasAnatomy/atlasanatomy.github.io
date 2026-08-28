@@ -1,6 +1,9 @@
-import EarthCanvas from "./Earth";
-import BallCanvas from "./Ball";
-import ComputersCanvas from "./Computers";
-import StarsCanvas from "./Stars";
+import { lazy } from 'react';
 
-export { EarthCanvas, BallCanvas, ComputersCanvas, StarsCanvas };
+// Ogni canvas è dietro un import() dinamico: three, drei e fiber finiscono in
+// chunk separati che non entrano nel percorso critico. Il bundle d'ingresso
+// torna a contenere solo React e il markup, e il 3D arriva quando serve.
+export const ComputersCanvas = lazy(() => import('./Computers'));
+export const RocketCanvas = lazy(() => import('./Rocket'));
+export const TechCanvas = lazy(() => import('./TechCanvas'));
+export const StarsCanvas = lazy(() => import('./Stars'));

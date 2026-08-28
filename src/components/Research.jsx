@@ -1,97 +1,99 @@
-import React from "react";
-import {Tilt} from "react-tilt";
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
 
-import { styles } from "../styles";
-import { elsevier} from "../assets";
-import { scholar} from "../assets";
-import { SectionWrapper } from "../hoc";
-import { projects } from "../constants";
-import { fadeIn, textVariant } from "../utils/motion";
+import { SectionWrapper } from '../hoc';
+import { featuredPapers, publications } from '../constants';
+import { fadeIn } from '../utils/motion';
+import SectionHeading from './SectionHeading';
 
-const ProjectCard = ({
-  index,
-  name,
-  description,
-  tags,
-  image,
-  source_code_link,
-}) => {
-  return (
-    <motion.div variants={fadeIn("up", "spring", index * 0.5, 0.75)}>
-      <Tilt
-        options={{
-          max: 45,
-          scale: 1,
-          speed: 450,
-        }}
-        className='bg-tertiary p-5 rounded-2xl sm:w-[360px] w-full'
-      >
-        <div className='relative w-full h-[230px]'>
-          <img
-            src={image}
-            alt='project_image'
-            className='w-full h-full object-cover rounded-2xl'
-          />
+/**
+ * Le pubblicazioni.
+ *
+ * Otto lavori hanno un'anteprima e stanno in evidenza; gli altri cinque restano
+ * in un elenco fitto. Una lista di riferimenti si consulta scorrendo e cercando
+ * un titolo, non guardando tredici card tutte uguali: dare la stessa superficie
+ * a entrambe le cose renderebbe più difficile trovare qualcosa.
+ */
 
-          <div className='absolute inset-0 flex justify-end m-3 card-img_hover'>
-            <div
-              onClick={() => window.open(source_code_link, "_blank")}
-              className='white-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer'
-            >
-              <img
-                src={scholar}
-                alt='source code'
-                className='w-1/2 h-1/2 object-contain'
-              />
-            </div>
-          </div>
-        </div>
+const PaperCard = ({ index, name, description, tags, image, source_code_link }) => (
+  <motion.article variants={fadeIn('up', 'spring', Math.min(index, 4) * 0.1, 0.6)} className="surface-panel h-full">
+    <a href={source_code_link} target="_blank" rel="noreferrer noopener" className="flex h-full flex-col p-4 sm:p-5">
+      <img
+        src={image}
+        alt=""
+        width="360"
+        height="230"
+        loading="lazy"
+        decoding="async"
+        className="w-full h-[190px] sm:h-[210px] object-cover"
+      />
 
-        <div className='mt-5'>
-          <h3 className='text-white font-bold text-[24px]'>{name}</h3>
-          <p className='mt-2 text-secondary text-[14px]' style={{ textAlign: 'justify' }}>{description}</p>
-        </div>
+      <h3 className="mt-5 text-white font-bold leading-snug text-[clamp(1.05rem,2vw,1.25rem)]">
+        {name}
+      </h3>
 
-        <div className='mt-4 flex flex-wrap gap-2'>
-          {tags.map((tag) => (
-            <p
-              key={`${name}-${tag.name}`}
-              className={`text-[14px] ${tag.color}`}
-            >
-              #{tag.name}
-            </p>
-          ))}
-        </div>
-      </Tilt>
-    </motion.div>
-  );
-};
+      <p className="mt-2 text-secondary text-[14px] leading-[1.7]">{description}</p>
 
-const Research = () => {
-  return (
-    <>
-      <motion.div variants={textVariant()}>
-        <p className={`${styles.sectionSubText} `}>My industrial/academic work</p>
-        <h2 className={`${styles.sectionHeadText}`}>Research.</h2>
-      </motion.div>
-
-      <div className='w-full flex'>
-        <motion.p
-          variants={fadeIn("", "", 0.1, 1)}
-          className='mt-3 text-secondary text-[17px] max-w-3xl leading-[30px]' style={{ textAlign: 'justify' }}
-        >
-          The following projects illustrate my skills and experience through practical examples of my work. Each project includes a brief description and links to my published papers and research articles. These contributions demonstrate my expertise in solving complex problems, utilizing diverse methodologies, and effectively managing research projects.
-        </motion.p>
-      </div>
-
-      <div className='mt-20 flex flex-wrap gap-7'>
-        {projects.map((project, index) => (
-          <ProjectCard key={`project-${index}`} index={index} {...project} />
+      <ul className="mt-4 flex flex-wrap gap-x-3 gap-y-1 pt-4 border-t border-line-200">
+        {tags.map((tag) => (
+          <li key={`${name}-${tag.name}`} className={`text-[13px] font-medium ${tag.color}`}>
+            #{tag.name}
+          </li>
         ))}
-      </div>
-    </>
-  );
-};
+      </ul>
+    </a>
+  </motion.article>
+);
 
-export default SectionWrapper(Research, "Research");
+const PublicationRow = ({ index, title, authors, venue, detail, year, link }) => (
+  <motion.li variants={fadeIn('up', 'spring', Math.min(index, 5) * 0.06, 0.5)} className="surface-row">
+    <a
+      href={link}
+      target="_blank"
+      rel="noreferrer noopener"
+      className="grid gap-x-6 gap-y-1 px-1 py-5 sm:grid-cols-[4.5rem_1fr] group"
+    >
+      <span className="text-[13px] font-semibold tabular-nums text-accent sm:pt-0.5">{year}</span>
+
+      <span>
+        <span className="block text-white-100 text-[15px] font-semibold leading-snug group-hover:text-white transition-colors duration-200">
+          {title}
+        </span>
+        <span className="mt-1.5 block text-secondary text-[13px] leading-relaxed">{authors}</span>
+        <span className="mt-1 block text-secondary/70 text-[13px]">
+          <em className="not-italic font-medium text-secondary">{venue}</em>
+          {detail ? ` · ${detail}` : ''}
+        </span>
+      </span>
+    </a>
+  </motion.li>
+);
+
+const Research = () => (
+  <>
+    <SectionHeading eyebrow="Peer-reviewed work" title="Research.">
+      Thirteen papers in Transportation Research Part C and Part E, Computers &amp; Industrial
+      Engineering, IEEE Access and IEEE T-ITS, Expert Systems with Applications and others — written
+      with groups in Luxembourg, Delft, Rome and Beijing. Most of them started from an operational
+      problem someone actually had.
+    </SectionHeading>
+
+    <div className="mt-14 sm:pl-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {featuredPapers.map((paper, index) => (
+        <PaperCard key={paper.name} index={index} {...paper} />
+      ))}
+    </div>
+
+    <div className="mt-16 sm:pl-8">
+      <h3 className="text-[12px] font-semibold uppercase tracking-[0.2em] text-secondary">
+        Also published
+      </h3>
+      <ul className="mt-4 max-w-4xl">
+        {publications.map((publication, index) => (
+          <PublicationRow key={publication.title} index={index} {...publication} />
+        ))}
+      </ul>
+    </div>
+  </>
+);
+
+export default SectionWrapper(Research, 'research');

@@ -5,12 +5,23 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist",
     "dev": "vite",
     "build": "vite build",
+    "preview": "vite preview",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "assets": "npm run assets:models && npm run assets:images && npm run assets:poster && npm run assets:fonts",
+    "assets:models": "node scripts/optimize-models.mjs",
+    "assets:images": "node scripts/optimize-images.mjs",
+    "assets:poster": "node scripts/render-poster.mjs",
+    "assets:fonts": "node scripts/fetch-fonts.mjs",
+    "verify": "node scripts/verify.mjs",
+    "verify:shots": "node scripts/verify.mjs --shots",
+    "lighthouse": "node scripts/lighthouse.mjs dist --devtools",
+    "lighthouse:simulate": "node scripts/lighthouse.mjs dist",
+    "lighthouse:baseline": "node scripts/lighthouse.mjs --baseline --devtools",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist -t",
+    "verify:nav": "node scripts/verify-nav.mjs"
   },
   "dependencies": {
     "@emailjs/browser": "^4.3.3",
@@ -20,12 +31,13 @@
     "maath": "^0.10.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.23.1",
-    "react-tilt": "^1.0.2",
-    "react-vertical-timeline-component": "^3.6.0",
     "three": "^0.165.0"
   },
   "devDependencies": {
+    "@gltf-transform/cli": "^4.4.2",
+    "@gltf-transform/core": "^4.4.2",
+    "@gltf-transform/extensions": "^4.4.2",
+    "@gltf-transform/functions": "^4.4.2",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@vitejs/plugin-react": "^4.2.1",
@@ -35,7 +47,12 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
     "gh-pages": "^6.1.1",
+    "lighthouse": "^13.4.1",
+    "meshoptimizer": "^1.2.0",
+    "playwright": "^1.62.1",
     "postcss": "^8.4.38",
+    "serve": "^14.2.6",
+    "sharp": "^0.35.4",
     "tailwindcss": "^3.4.4",
     "vite": "^5.2.0"
   }

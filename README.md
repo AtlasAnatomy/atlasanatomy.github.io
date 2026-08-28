@@ -1,72 +1,92 @@
-# 🚀 Welcome to My Online CV! 🚀
+# atlasanatomy.github.io
 
-## The Epic Quest of an Operations Research and ML Researcher 🧙‍♂️💻
+Portfolio di Tommaso Bosi — React + Vite + Tailwind, con una scena three.js
+nell'hero e una nella sezione contatti. Pubblicato su GitHub Pages.
 
-Greetings, intrepid explorer! You've stumbled upon the digital realm of a researcher dedicated to taming the wild algorithms of sustainable transport networks. If you think coding is just typing furiously at a keyboard, think again. It’s a noble quest filled with optimization dragons and data dungeons. Buckle up, because this journey is about to get... optimized!
+## Come è fatto
 
-### Table of Contents
-1. **Introduction** - Who am I? (Spoiler: Not Batman)
-2. **Research Interests** - My obsessions explained
-3. **Projects** - The monsters I’ve slain
-4. **Publications** - Words that no one reads (except reviewers)
-5. **Skills** - Superpowers unlocked
-6. **Contact** - Reach out, if you dare
+```
+index.html            documento d'ingresso: contiene il poster dell'hero, che è
+                      l'elemento LCP e non dipende dal bundle
+src/                  sorgente dell'applicazione
+  components/         sezioni e canvas 3D
+  constants/          tutti i contenuti (esperienze, pubblicazioni, progetti)
+  hooks/              caricamento differito e preferenze di sistema
+public/               file serviti così come sono, con URL stabile
+  models/*.glb        modelli 3D compressi con Draco
+  fonts/*.woff2       Poppins in locale
+  hero-poster*.webp   render statici del modello dell'hero
+  herobg.webp         sfondo dell'hero (preloadato: è l'elemento LCP)
+scripts/              pipeline degli asset e verifiche
+desktop_pc/, rocket/  modelli sorgente non compressi — NON pubblicati,
+                      servono solo a rigenerare i .glb
+```
 
----
+## Sviluppo
 
-## 1. Introduction: Who am I? 🤔
+```bash
+npm install
+npm run dev
+```
 
-By day, I'm a mild-mannered researcher in Computer Science and Automation. By night, well, I’m usually debugging code. My superpower? Developing algorithms that make transport networks as green as Hulk after a traffic jam.
+## Pipeline degli asset
 
-**Name:** [Tommaso Bosi]  
-**Title:** Doctor in Computer Science and Automation (No, not a medical doctor)  
-**Location:** Somewhere between a compiler error and a logical paradox
+I file in `public/models`, `public/fonts` e i poster sono **generati**. Vanno
+rifatti solo se cambiano i modelli sorgente, le immagini in `src/assets` o la
+posa della camera in `src/components/canvas/Computers.jsx`.
 
----
+```bash
+npm run assets              # tutto quanto
+npm run assets:models       # desktop_pc + rocket -> .glb Draco   (70,7 MB -> 1,5 MB)
+npm run assets:images       # PNG -> WebP dimensionati            (21,7 MB -> 0,6 MB)
+npm run assets:poster       # render dei poster dell'hero
+npm run assets:fonts        # scarica i pesi di Poppins usati
+```
 
-## 2. Research Interests: My Obsessions Explained 🕵️‍♂️
+> La posa del modello dell'hero è definita due volte: in `POSE` dentro
+> `src/components/canvas/Computers.jsx` e in `VARIANTS` dentro
+> `scripts/render-poster.mjs`. Devono restare allineate, altrimenti il modello
+> salta nel momento in cui il canvas subentra al poster.
 
-- **Optimization Algorithms**: Because who doesn't love a good puzzle?
-- **Sustainable Transport Networks**: Saving the planet, one algorithm at a time.
-- **Machine Learning & OR**: Teaching computers to think, or at least pretend to.
+## Verifiche
 
----
+```bash
+npm run build
+npm run verify              # overflow, aree toccabili, console, link, a 5 viewport
+npm run verify:shots        # come sopra, salvando gli screenshot
+npm run lighthouse          # Lighthouse mobile, throttling reale
+npm run lighthouse:simulate # Lighthouse mobile, throttling simulato (come PageSpeed)
+```
 
-## 3. Projects: The Monsters I’ve Slain 🐉
+Il server di prova usato dalle verifiche comprime in gzip i formati testuali,
+come fa GitHub Pages: senza, si misurerebbero 182 kB di bundle invece dei ~58
+che il browser scarica davvero.
 
-### Project Green Scheduling
-**Description:** Developed various metaheuristics to optimize scheduling for mixed-fleet of hybrid and electric buses. No more running out of battery halfway to your destination.  
-**Outcome:** Reduced travel delays, fleet size, and carbon footprint, increased smugness.
+## Pubblicazione
 
-### Shunting Operations at Intermodal Stations
-**Description:** An event-based simulator framework to manage shunting operations at Bettembourg terminal Eurohub.  
-**Outcome:** Improved efficiency, reduced delays, and more satisfied logistics managers.
+```bash
+npm run deploy              # build + push di dist/ sul branch gh-pages
+```
 
-### Train Calendar Generation
-**Description:** A robust model for generating descriptive paragraphs of train calendars to optimize user/ICT interactions.  
-**Outcome:** Better train information, less confusion, and a boost in public transport popularity.
+Richiede una modifica **una tantum** nelle impostazioni del repository:
+*Settings → Pages → Build and deployment → Source: Deploy from a branch →
+`gh-pages` / `(root)`*.
 
----
+Finché l'impostazione punta a `main`, il sito pubblicato resta quello vecchio:
+i file nella radice di `main` (`assets/`, `index.html` compilato, `desktop_pc/`,
+`rocket/`) sono la pubblicazione precedente.
 
-## 4. Skills: Superpowers Unlocked 🦸‍♂️
+In alternativa, senza toccare le impostazioni, si può continuare a pubblicare
+dalla radice di `main` copiandoci il contenuto di `dist/`. Va fatto rimuovendo
+prima i file della pubblicazione precedente, altrimenti restano lì a occupare
+spazio nel repository:
 
-- **Programming Languages:** Python, Java, C (and fluent in sarcasm)
-- **Web Development:** HTML 5, CSS 3, Three.js
-- **Tools & Technologies:** Pycharm/VS Code, Cplex, Scikit-learn, Chatgpt/Gemini/Copilot, Git (because what’s life without version control?)
-- **Soft Skills:** Public Speaking, Team Leadership, Coffee Consumption
+```bash
+npm run build
+git rm -r --cached assets && rm -rf assets   # bundle della vecchia build
+cp -r dist/* .
+```
 
----
-
-## 5. Contact: Reach Out, If You Dare 📬
-
-- **Email:** [bositommaso13@gmail.com]
-- **LinkedIn:** [https://www.linkedin.com/in/tommaso-bosi-phd-323073155/]
-- **Linktree:** [(https://linktr.ee/bositommaso)]
-
----
-
-## Disclaimer
-
-*This README is provided "as-is" without warranty of any kind, express or implied. In no event shall the author be held liable for any code-induced stress, frustration, or addiction to caffeine resulting from reading this document.*
-
-Happy coding! 🚀
+I modelli sorgente `desktop_pc/` e `rocket/` vanno invece tenuti: servono alla
+pipeline. Con la pubblicazione dalla radice restano però accessibili in rete;
+è un altro motivo per preferire il branch `gh-pages`.
