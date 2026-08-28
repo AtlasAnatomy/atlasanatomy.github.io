@@ -1,4 +1,4 @@
-import{r as Je,q as dx,j as vi}from"./index-DfLoC_Ce.js";/**
+import{r as Je,w as dx,j as vi}from"./index-CXvKvQA1.js";/**
  * @license
  * Copyright 2010-2024 Three.js Authors
  * SPDX-License-Identifier: MIT
