@@ -1,1 +1,0 @@
-import{j as t,d as e}from"./index-BiMnLI7Q.js";import{S as o}from"./SectionWrapper-BSfyIVax.js";import{S as i}from"./SectionHeading-CJ7lslB_.js";import{T as s}from"./Timeline-gQmoB2nx.js";const a=()=>t.jsxs(t.Fragment,{children:[t.jsx(i,{eyebrow:"Where I studied",title:"Education."}),t.jsx(s,{items:e})]}),c=o(a,"education");export{c as default};
