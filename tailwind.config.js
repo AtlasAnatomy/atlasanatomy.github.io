@@ -27,6 +27,11 @@ module.exports = {
         // 360 copre gli schermi stretti reali (320-374) senza forzare un breakpoint
         // dedicato; xs resta il salto storico del progetto.
         xs: '450px',
+        // Telefoni bassi (iPhone SE, Galaxy da 740): l'hero ha poca altezza e
+        // testo, modello e indicatore non ci stanno con le misure normali. La
+        // larghezza è nella query per non far scattare la regola su una finestra
+        // desktop schiacciata, dove il layout è un altro.
+        short: { raw: '(max-height: 800px) and (max-width: 639px)' },
       },
       backgroundImage: {
         // Da public/, non da src/assets: serve un URL stabile perché index.html

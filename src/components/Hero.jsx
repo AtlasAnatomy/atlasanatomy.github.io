@@ -78,10 +78,13 @@ const Hero = () => {
         del modello finisce intorno al 65% dell'altezza della sezione qualunque
         sia il telefono, quindi una percentuale la segue, mentre un margine fisso
         dal fondo no. Misurato: con 112px fissi, su uno schermo da 640 l'indicatore
-        finiva 14px dentro il modello. Da 640 a 844 di altezza lo stacco resta
-        fra 31 e 61px. Su sm e oltre resta agganciato al fondo come prima.
+        finiva 14px dentro il modello. Su sm e oltre resta agganciato al fondo.
+
+        Sui telefoni bassi torna invece in fondo: lì il 73% lo piazzerebbe a metà
+        dello spazio che serve al modello per stare sotto il testo, e testo,
+        modello e indicatore non ci starebbero tutti.
       */}
-      <div className="absolute top-[73%] bottom-auto sm:top-auto sm:bottom-10 w-full flex justify-center items-center z-10">
+      <div className="absolute top-[73%] bottom-auto short:top-auto short:bottom-6 sm:top-auto sm:bottom-10 w-full flex justify-center items-center z-10">
         <a
           href="#about"
           aria-label="Skip to the introduction"

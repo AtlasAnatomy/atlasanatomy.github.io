@@ -1,9 +1,36 @@
-import { Suspense, useEffect } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF } from '@react-three/drei';
 
 import CanvasLoader from '../Loader';
 import { useViewportTier } from '../../hooks/useDeferredMount';
+
+// Deve restare allineata al breakpoint `short` di tailwind.config.js: di là
+// scende l'indicatore dell'hero, di qua il modello, e i due si spartiscono lo
+// stesso spazio.
+const SHORT_QUERY = '(max-height: 800px) and (max-width: 639px)';
+
+/*
+ * Vero sui telefoni bassi. Il valore iniziale si legge già al primo render e
+ * non in un effetto: il canvas gira con frameloop="demand", e una posa corretta
+ * solo al secondo render rischiava di non essere mai ridipinta.
+ */
+function useShortViewport() {
+  const [short, setShort] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia(SHORT_QUERY).matches,
+  );
+
+  useEffect(() => {
+    const query = window.matchMedia(SHORT_QUERY);
+    setShort(query.matches);
+
+    const onChange = (event) => setShort(event.matches);
+    query.addEventListener('change', onChange);
+    return () => query.removeEventListener('change', onChange);
+  }, []);
+
+  return short;
+}
 
 // Il .glb è Draco + texture WebP: 15,08 MB di gltf/bin/textures sciolti diventano
 // 1,13 MB in un file solo. Il decoder è servito da /draco/, non dalla CDN gstatic
@@ -27,9 +54,22 @@ const POSE = {
   desktop: { scale: 0.7, position: [0, -2.5, -1.5] },
 };
 
-const Computers = ({ tier, onReady }) => {
+/*
+ * Telefoni bassi: più piccolo e più in basso.
+ *
+ * Con la posa mobile normale, su un iPhone SE il modello finiva 33px sopra il
+ * testo dell'hero. Rimpicciolirlo e basta non bastava, la cima si alzava di
+ * appena 5px: quello che conta è la y, perché il modello si posiziona a una
+ * percentuale fissa dell'altezza della sezione mentre il testo parte da 140px
+ * fissi. Scendere e basta però lo mandava addosso all'indicatore, che infatti
+ * su questi schermi torna in fondo (breakpoint `short`).
+ */
+const MOBILE_SHORT = { scale: 0.26, position: [0, -2.5, -0.5] };
+
+const Computers = ({ tier, short, onReady }) => {
   const { scene } = useGLTF(MODEL_URL, DRACO_PATH);
-  const { scale, position } = POSE[tier] ?? POSE.desktop;
+  const { scale, position } =
+    short && tier === 'mobile' ? MOBILE_SHORT : POSE[tier] ?? POSE.desktop;
 
   // useGLTF sospende finché il modello non è pronto: quando questo effetto parte
   // la scena esiste già, ed è il momento giusto per far sfumare via il poster.
@@ -56,6 +96,7 @@ const Computers = ({ tier, onReady }) => {
 
 const ComputersCanvas = ({ onModelReady }) => {
   const tier = useViewportTier();
+  const short = useShortViewport();
 
   return (
     <Canvas
@@ -77,7 +118,7 @@ const ComputersCanvas = ({ onModelReady }) => {
           maxPolarAngle={Math.PI / 2}
           minPolarAngle={Math.PI / 2}
         />
-        <Computers tier={tier} onReady={onModelReady} />
+        <Computers tier={tier} short={short} onReady={onModelReady} />
       </Suspense>
     </Canvas>
   );
