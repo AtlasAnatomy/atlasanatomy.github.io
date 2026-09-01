@@ -118,7 +118,7 @@ const Navbar = () => {
           <span className="text-white text-[15px] font-bold leading-tight">
             Tommaso Bosi
             <span className="hidden lg:block text-secondary text-[12px] font-medium tracking-wide">
-              Operations Research &amp; Optimization
+              IT Manager &amp; Developer
             </span>
           </span>
         </a>

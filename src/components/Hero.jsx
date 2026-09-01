@@ -35,11 +35,11 @@ const Hero = () => {
             Hi, I&rsquo;m <span className="text-accent">Tom</span>
           </h1>
           <p className={`${styles.heroSubText} mt-3 sm:mt-4`}>
-            I build optimization algorithms
-            <br className="hidden xs:block" /> for transport networks
+            I build optimization algorithms<span className="hidden xs:inline">,</span>
+            <br className="hidden xs:block" /> web and mobile applications
           </p>
           <p className="mt-4 sm:mt-6 text-secondary text-[clamp(0.85rem,1.6vw,1rem)] leading-relaxed">
-            Ph.D. in Computer Science and Automation · 13 peer-reviewed papers · Rome
+            Ph.D. in Computer Science and Automation · Innovation Manager · Rome
           </p>
         </div>
       </div>
