@@ -2,7 +2,6 @@ import { Suspense, useEffect, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF } from '@react-three/drei';
 
-import CanvasLoader from '../Loader';
 import { useViewportTier } from '../../hooks/useDeferredMount';
 
 // Deve restare allineata al breakpoint `short` di tailwind.config.js: di là
@@ -41,37 +40,42 @@ const DRACO_PATH = '/draco/';
 // Posa per fascia di viewport. Il ramo desktop deve restare allineato a
 // scripts/render-poster.mjs, altrimenti il poster e il canvas non si sovrappongono.
 //
-// La y del ramo mobile è scesa da -1,2 a -2,2 per staccare il modello dal testo
-// dell'hero, che gli finiva praticamente addosso: da 10px di stacco a 59 su un
-// iPhone 12.
+// Il ramo mobile è passato da scala 0,3 e y -1,2 a 0,33 e -2,1: il modello era
+// piccolo e appiccicato al testo. Su un iPhone 12 ora è alto 160px invece di
+// 109 e ne dista 148.
 //
-// Attenzione se la si ritocca. Il modello si posiziona a una percentuale fissa
-// dell'altezza della sezione, mentre il testo parte da 160px fissi: più lo
-// schermo è corto, più il modello sale sul testo. Sotto ci passa l'indicatore,
-// che su mobile sta all'82%, quindi scendere troppo lo manda addosso a quello.
+// Il grosso del guadagno però non è la scala: è l'hero che su mobile è passata
+// a 100svh in index.css. Il modello non ha una dimensione propria, la ricava
+// dall'altezza del canvas, quindi allungare la sezione lo ingrandisce da solo.
+//
+// Il tetto alla scala è la larghezza: oltre 0,33 la scrivania sborda e il case
+// del PC resta tagliato a metà sul bordo destro.
+//
+// Attenzione se si ritocca la y. Il modello sta a una percentuale fissa
+// dell'altezza della sezione mentre il testo parte da 160px fissi: più lo
+// schermo è corto, più il modello sale sul testo. Sotto passa l'indicatore, che
+// su mobile sta all'84%, quindi scendere troppo lo manda addosso a quello.
 const POSE = {
-  mobile: { scale: 0.3, position: [0, -2.2, -0.5] },
+  mobile: { scale: 0.33, position: [0, -2.1, -0.5] },
   tablet: { scale: 0.5, position: [0, -1.8, -1] },
   laptop: { scale: 0.62, position: [0, -2.2, -1.3] },
   desktop: { scale: 0.7, position: [0, -2.5, -1.5] },
 };
 
 /*
- * Telefoni bassi: più piccolo e più in basso.
+ * Telefoni bassi: appena più piccolo e sensibilmente più in basso.
  *
- * Con la posa mobile normale, su un iPhone SE il modello finiva sopra il testo
- * dell'hero. Rimpicciolirlo e basta non bastava, la cima si alzava di appena
+ * Con la posa mobile normale, su questi schermi il modello finiva sopra il testo
+ * dell'hero. Rimpicciolirlo e basta non serviva, la cima si alzava di appena
  * 5px: quello che conta è la y. Scendere e basta però lo mandava addosso
- * all'indicatore, che infatti su questi schermi torna in fondo (breakpoint
- * `short`).
+ * all'indicatore, che infatti qui torna in fondo (breakpoint `short`).
  *
- * Su un iPhone SE, fra la fine del testo e il fondo della sezione restano 199px
- * da spartire fra il modello, l'indicatore e i tre stacchi. Con questa scala il
- * modello ne prende 65, l'indicatore 68, e avanzano 66px divisi in 27 sopra il
- * modello, 27 sotto e 12 in fondo. Rimpicciolire ancora è l'unico modo per
- * allargare quegli stacchi.
+ * Il caso stretto è un Android da 360x610 con la barra del browser aperta: lì il
+ * sottotitolo va a tre righe e il testo finisce a 335px, lasciandone 275 fino al
+ * fondo. Il modello ne prende 112, l'indicatore 44, e avanzano 119px divisi in
+ * 38 sopra il modello, 65 sotto e 16 in fondo.
  */
-const MOBILE_SHORT = { scale: 0.22, position: [0, -2.65, -0.5] };
+const MOBILE_SHORT = { scale: 0.32, position: [0, -2.6, -0.5] };
 
 const Computers = ({ tier, short, onReady }) => {
   const { scene } = useGLTF(MODEL_URL, DRACO_PATH);
@@ -118,7 +122,17 @@ const ComputersCanvas = ({ onModelReady }) => {
       gl={{ antialias: true, powerPreference: 'high-performance' }}
       aria-hidden="true"
     >
-      <Suspense fallback={<CanvasLoader />}>
+      {/*
+        Nessun fallback qui dentro.
+
+        CanvasLoader si piazza proiettando l'origine 3D sullo schermo, che su
+        mobile cade a metà sezione, cioè dietro al testo dell'hero. In più Hero
+        disegna già la sua tazzina fuori dal canvas: mentre il modello scaricava
+        se ne vedevano due, una addosso alla scritta e una al posto giusto.
+        Quella dell'hero basta, e gira anche prima che three sia scaricato.
+        Gli altri canvas continuano a usare CanvasLoader: lì non c'è testo sotto.
+      */}
+      <Suspense fallback={null}>
         <OrbitControls
           enableZoom={false}
           enablePan={false}

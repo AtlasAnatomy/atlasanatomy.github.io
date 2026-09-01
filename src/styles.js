@@ -11,8 +11,12 @@ const styles = {
   paddingY: 'py-10 sm:py-16',
   padding: 'px-6 sm:px-10 lg:px-16 py-12 sm:py-20',
 
+  // Il pavimento del clamp scende a 2rem: su mobile il titolo occupava 40px di
+  // altezza fissi, spazio che serve al modello 3D. Sopra i 450px di larghezza
+  // il valore torna a essere quello calcolato da 9vw, quindi tablet e desktop
+  // non cambiano.
   heroHeadText:
-    'font-black text-white leading-[1.02] tracking-[-0.03em] text-[clamp(2.5rem,9vw,5rem)]',
+    'font-black text-white leading-[1.02] tracking-[-0.03em] text-[clamp(2rem,9vw,5rem)]',
   heroSubText:
     'text-[#dfd9ff] font-medium leading-[1.5] text-[clamp(1rem,2.4vw,1.75rem)]',
 

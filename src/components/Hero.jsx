@@ -54,20 +54,26 @@ const Hero = () => {
         )}
 
         {/* La tazzina resta finché il modello non è in scena. Sta nel DOM, non
-            dentro il canvas: deve girare anche prima che three sia scaricato. */}
+            dentro il canvas: deve girare anche prima che three sia scaricato.
+
+            Su mobile non va centrata nella sezione: lì finiva dietro al testo
+            dell'hero, che parte da 160px. Sta invece al 64% dell'altezza, dove
+            comparirà il modello, così il caricamento si vede dove poi si guarda.
+
+            La traslazione sta sull'involucro e non sull'immagine: la tazzina ha
+            già la sua animazione di rotazione sul transform, e le due si
+            annullerebbero a vicenda. */}
         {!modelReady && (
-          <div
-            className="hero-layer flex items-center justify-center"
-            role="status"
-            aria-live="polite"
-          >
-            <img
-              src={coffeeCup}
-              alt=""
-              width="56"
-              height="56"
-              className="coffee-cup-loader h-14 w-14"
-            />
+          <div className="hero-layer" role="status" aria-live="polite">
+            <div className="absolute left-1/2 top-[64%] -translate-x-1/2 -translate-y-1/2 sm:top-1/2">
+              <img
+                src={coffeeCup}
+                alt=""
+                width="56"
+                height="56"
+                className="coffee-cup-loader h-14 w-14"
+              />
+            </div>
             <span className="sr-only">Loading the 3D scene</span>
           </div>
         )}
@@ -85,13 +91,17 @@ const Hero = () => {
         lo spazio che serve al modello per stare sotto il testo, e testo, modello
         e indicatore non ci starebbero tutti.
       */}
-      <div className="absolute top-[82%] bottom-auto short:top-auto short:bottom-3 sm:top-auto sm:bottom-10 w-full flex justify-center items-center z-10">
+      <div className="absolute top-[84%] bottom-auto short:top-auto short:bottom-4 sm:top-auto sm:bottom-10 w-full flex justify-center items-center z-10">
+        {/* Su mobile è poco più di metà: il tubo grande si mangiava 68px di
+            altezza che servono al modello. Da sm torna alla misura piena. */}
         <a
           href="#about"
           aria-label="Skip to the introduction"
-          className="grid place-items-center w-[44px] h-[68px] rounded-3xl border-4 border-secondary/70 hover:border-accent transition-colors duration-300"
+          className="grid place-items-center w-[28px] h-[44px] border-2 sm:w-[44px] sm:h-[68px] sm:border-4 rounded-3xl border-secondary/70 hover:border-accent transition-colors duration-300"
         >
-          <span className={`block w-3 h-3 rounded-full bg-secondary ${reducedMotion ? '' : 'scroll-dot'}`} />
+          <span
+            className={`block w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-secondary ${reducedMotion ? '' : 'scroll-dot'}`}
+          />
         </a>
       </div>
     </section>

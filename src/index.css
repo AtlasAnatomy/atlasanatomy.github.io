@@ -151,9 +151,18 @@ body {
    e senza il fallback un browser più vecchio ignorerebbe la regola lasciando la
    sezione alta quanto il testo. Su telefono resta bassa perché sotto il modello
    non c'è nulla da mostrare, solo attesa. */
+/*
+ * Su mobile l'hero prende tutta l'altezza del viewport piccolo.
+ *
+ * Il modello 3D non ha una dimensione in pixel propria: la ricava dall'altezza
+ * del canvas, che è quella della sezione. Con 78svh, su un telefono con la barra
+ * del browser aperta restavano poco più di 470px e il modello veniva minuscolo,
+ * per quanto si alzasse la scala. Con 100svh guadagna il 28% di corpo prima
+ * ancora di toccare la posa. Overview finisce sotto la piega, ed è voluto.
+ */
 .hero-section {
-  min-height: 78vh;
-  min-height: 78svh;
+  min-height: 100vh;
+  min-height: 100svh;
 }
 
 @media (min-width: 640px) {
@@ -222,11 +231,22 @@ body {
 /* Indicatore di scorrimento dell'hero. In CSS invece che in framer-motion:
    è l'unica animazione sopra la piega, e così la libreria di animazione esce
    del tutto dal percorso critico. */
+/* L'ampiezza è una variabile perché su mobile il tubo dell'indicatore è più
+   corto: con la corsa piena il pallino ne sarebbe uscito. */
 .scroll-dot {
+  --dot-su: -10px;
+  --dot-giu: 12px;
   animation: scroll-dot 1.5s ease-in-out infinite;
 }
 
+@media (max-width: 639px) {
+  .scroll-dot {
+    --dot-su: -6px;
+    --dot-giu: 7px;
+  }
+}
+
 @keyframes scroll-dot {
-  0%, 100% { transform: translateY(-10px); }
-  50% { transform: translateY(12px); }
+  0%, 100% { transform: translateY(var(--dot-su)); }
+  50% { transform: translateY(var(--dot-giu)); }
 }
