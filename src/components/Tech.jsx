@@ -4,6 +4,7 @@ import { TechCanvas } from './canvas';
 import { SectionWrapper } from '../hoc';
 import { technologies } from '../constants';
 import { useDeferredMount, useViewportTier } from '../hooks/useDeferredMount';
+import SectionHeading from './SectionHeading';
 
 /*
  * Colonne per fascia di viewport, e lato massimo della cella.
@@ -44,30 +45,34 @@ const Tech = () => {
   const cellPx = width > 0 ? Math.min(maxCell, Math.floor(width / (columns + 2 * PAD_CELLS))) : 0;
 
   return (
-    // -mx-2 recupera un po' di respiro sui bordi stretti senza toccare
-    // la spaziatura delle altre sezioni.
-    <div ref={boxRef} className="-mx-2 flex justify-center sm:mx-0">
-      <div
-        ref={mountRef}
-        style={{
-          width: cellPx ? columns * cellPx + 2 * PAD_CELLS * cellPx : '100%',
-          height: cellPx ? rows * cellPx + 2 * PAD_CELLS * cellPx : rows * 120,
-        }}
-      >
-        {mounted && cellPx > 0 && (
-          <Suspense fallback={null}>
-            <TechCanvas technologies={technologies} columns={columns} cellPx={cellPx} />
-          </Suspense>
-        )}
-      </div>
+    <>
+      <SectionHeading eyebrow="Frameworks and programming languages" title="Skills." />
 
-      <ul className="sr-only">
-        {technologies.map((technology) => (
-          <li key={technology.name}>{technology.name}</li>
-        ))}
-      </ul>
-    </div>
+      {/* -mx-2 recupera un po' di respiro sui bordi stretti senza toccare
+          la spaziatura delle altre sezioni. */}
+      <div ref={boxRef} className="-mx-2 mt-10 flex justify-center sm:mx-0">
+        <div
+          ref={mountRef}
+          style={{
+            width: cellPx ? columns * cellPx + 2 * PAD_CELLS * cellPx : '100%',
+            height: cellPx ? rows * cellPx + 2 * PAD_CELLS * cellPx : rows * 120,
+          }}
+        >
+          {mounted && cellPx > 0 && (
+            <Suspense fallback={null}>
+              <TechCanvas technologies={technologies} columns={columns} cellPx={cellPx} />
+            </Suspense>
+          )}
+        </div>
+
+        <ul className="sr-only">
+          {technologies.map((technology) => (
+            <li key={technology.name}>{technology.name}</li>
+          ))}
+        </ul>
+      </div>
+    </>
   );
 };
 
-export default SectionWrapper(Tech, '');
+export default SectionWrapper(Tech, 'skills');

@@ -15,8 +15,8 @@ import { useAfterLoad } from './hooks/useAfterLoad';
 // Sopra la piega ci sono solo Navbar e Hero. Tutto il resto, e con esso
 // framer-motion, arriva da import() dinamici.
 const About = lazy(() => import('./components/About'));
-const Experience = lazy(() => import('./components/Experience'));
 const Tech = lazy(() => import('./components/Tech'));
+const Experience = lazy(() => import('./components/Experience'));
 const Research = lazy(() => import('./components/Research'));
 const Projects = lazy(() => import('./components/Projects'));
 const Education = lazy(() => import('./components/Education'));
@@ -51,8 +51,8 @@ const App = () => {
         {belowFold && (
           <Suspense fallback={<div className="min-h-screen" aria-hidden="true" />}>
             <About />
-            <Experience />
             <Tech />
+            <Experience />
             <Research />
             <Projects />
             <Education />

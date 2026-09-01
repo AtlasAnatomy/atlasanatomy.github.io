@@ -35,8 +35,13 @@ const RULES = [
  * da nominare in un <link rel="preload">, e veniva scoperto solo dopo il parse
  * del CSS: arrivava a 1812 ms contro i 948 del poster. Da public/ ha un URL
  * fisso, index.html lo può preloadare, e parte insieme al resto.
+ *
+ * Resta a piena risoluzione e a qualità alta: è una trama di linee sottili su
+ * fondo scuro, e sotto q80 il WebP le impasta in bande ben visibili. A 3200px/q88
+ * pesa 187 kB, contro i 33 kB di 1600px/q58 che si vedevano sgranati sui display
+ * a 2x, e contro 1,1 MB del sorgente non compresso.
  */
-const HERO_BACKGROUND = { from: 'src/assets/herobg.png', to: 'public/herobg.webp', maxWidth: 1600, quality: 58 };
+const HERO_BACKGROUND = { from: 'src/assets/herobg.png', to: 'public/herobg.webp', maxWidth: 3200, quality: 88 };
 
 const KB = (n) => (n / 1024).toFixed(0).padStart(6) + ' KB';
 
