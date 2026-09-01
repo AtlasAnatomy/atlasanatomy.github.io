@@ -41,14 +41,16 @@ const DRACO_PATH = '/draco/';
 // Posa per fascia di viewport. Il ramo desktop deve restare allineato a
 // scripts/render-poster.mjs, altrimenti il poster e il canvas non si sovrappongono.
 //
-// La y del ramo mobile è scesa da -1,2 a -1,6 per staccare il modello dal testo
-// dell'hero, che su mobile gli finiva praticamente addosso: da 10px di stacco a
-// 38 su un iPhone 12. Attenzione se la si ritocca: il modello si posiziona a una
-// percentuale fissa dell'altezza della sezione (cima al 51,5%, fondo al 68,1%),
-// mentre il testo parte da 140px fissi. Sui telefoni corti resta quindi
-// sovrapposto, e scendere ancora lo manderebbe addosso all'indicatore sotto.
+// La y del ramo mobile è scesa da -1,2 a -2,2 per staccare il modello dal testo
+// dell'hero, che gli finiva praticamente addosso: da 10px di stacco a 59 su un
+// iPhone 12.
+//
+// Attenzione se la si ritocca. Il modello si posiziona a una percentuale fissa
+// dell'altezza della sezione, mentre il testo parte da 160px fissi: più lo
+// schermo è corto, più il modello sale sul testo. Sotto ci passa l'indicatore,
+// che su mobile sta all'82%, quindi scendere troppo lo manda addosso a quello.
 const POSE = {
-  mobile: { scale: 0.3, position: [0, -1.6, -0.5] },
+  mobile: { scale: 0.3, position: [0, -2.2, -0.5] },
   tablet: { scale: 0.5, position: [0, -1.8, -1] },
   laptop: { scale: 0.62, position: [0, -2.2, -1.3] },
   desktop: { scale: 0.7, position: [0, -2.5, -1.5] },
@@ -57,14 +59,19 @@ const POSE = {
 /*
  * Telefoni bassi: più piccolo e più in basso.
  *
- * Con la posa mobile normale, su un iPhone SE il modello finiva 33px sopra il
- * testo dell'hero. Rimpicciolirlo e basta non bastava, la cima si alzava di
- * appena 5px: quello che conta è la y, perché il modello si posiziona a una
- * percentuale fissa dell'altezza della sezione mentre il testo parte da 140px
- * fissi. Scendere e basta però lo mandava addosso all'indicatore, che infatti
- * su questi schermi torna in fondo (breakpoint `short`).
+ * Con la posa mobile normale, su un iPhone SE il modello finiva sopra il testo
+ * dell'hero. Rimpicciolirlo e basta non bastava, la cima si alzava di appena
+ * 5px: quello che conta è la y. Scendere e basta però lo mandava addosso
+ * all'indicatore, che infatti su questi schermi torna in fondo (breakpoint
+ * `short`).
+ *
+ * Su un iPhone SE, fra la fine del testo e il fondo della sezione restano 199px
+ * da spartire fra il modello, l'indicatore e i tre stacchi. Con questa scala il
+ * modello ne prende 65, l'indicatore 68, e avanzano 66px divisi in 27 sopra il
+ * modello, 27 sotto e 12 in fondo. Rimpicciolire ancora è l'unico modo per
+ * allargare quegli stacchi.
  */
-const MOBILE_SHORT = { scale: 0.26, position: [0, -2.5, -0.5] };
+const MOBILE_SHORT = { scale: 0.22, position: [0, -2.65, -0.5] };
 
 const Computers = ({ tier, short, onReady }) => {
   const { scene } = useGLTF(MODEL_URL, DRACO_PATH);

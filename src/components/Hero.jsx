@@ -23,7 +23,7 @@ const Hero = () => {
   return (
     <section className="hero-section relative w-full">
       <div
-        className={`absolute inset-0 top-[140px] sm:top-[120px] max-w-7xl mx-auto ${styles.paddingX} flex flex-row items-start gap-5 z-10 pointer-events-none`}
+        className={`absolute inset-0 top-[160px] sm:top-[120px] max-w-7xl mx-auto ${styles.paddingX} flex flex-row items-start gap-5 z-10 pointer-events-none`}
       >
         <div className="flex flex-col justify-center items-center mt-2 sm:mt-5" aria-hidden="true">
           <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-accent" />
@@ -75,16 +75,17 @@ const Hero = () => {
 
       {/*
         Su mobile l'indicatore è ancorato dall'alto, non dal basso: la scrivania
-        del modello finisce intorno al 65% dell'altezza della sezione qualunque
-        sia il telefono, quindi una percentuale la segue, mentre un margine fisso
-        dal fondo no. Misurato: con 112px fissi, su uno schermo da 640 l'indicatore
-        finiva 14px dentro il modello. Su sm e oltre resta agganciato al fondo.
+        del modello finisce a una percentuale fissa dell'altezza della sezione
+        qualunque sia il telefono, quindi una percentuale la segue, mentre un
+        margine fisso dal fondo no. Misurato: con 112px fissi, su uno schermo da
+        640 l'indicatore finiva 14px dentro il modello. Su sm e oltre resta
+        agganciato al fondo.
 
-        Sui telefoni bassi torna invece in fondo: lì il 73% lo piazzerebbe a metà
-        dello spazio che serve al modello per stare sotto il testo, e testo,
-        modello e indicatore non ci starebbero tutti.
+        Sui telefoni bassi torna invece in fondo: lì l'82% lo piazzerebbe dentro
+        lo spazio che serve al modello per stare sotto il testo, e testo, modello
+        e indicatore non ci starebbero tutti.
       */}
-      <div className="absolute top-[73%] bottom-auto short:top-auto short:bottom-6 sm:top-auto sm:bottom-10 w-full flex justify-center items-center z-10">
+      <div className="absolute top-[82%] bottom-auto short:top-auto short:bottom-3 sm:top-auto sm:bottom-10 w-full flex justify-center items-center z-10">
         <a
           href="#about"
           aria-label="Skip to the introduction"
