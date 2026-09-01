@@ -7,17 +7,26 @@
     <title>Tommaso Bosi | CV</title>
     <meta
       name="description"
-      content="Ph.D. in Computer Science and Automation. I build optimization algorithms and simulation models for rail, transit and electric bus networks. Thirteen peer-reviewed papers, and software that runs in production."
+      content="Ph.D. in Computer Science and Automation. I build optimization algorithms and simulation models for rail, transit and electric bus networks."
     />
     <meta name="author" content="Tommaso Bosi" />
     <meta name="theme-color" content="#050816" />
     <link rel="canonical" href="https://atlasanatomy.github.io/" />
 
-    <link rel="icon" type="image/png" href="/logo1.png" />
+    <!--
+      Il favicon veniva servito a 180x180 e rimpicciolito dal browser: su un
+      ritratto la riduzione al volo impasta i tratti. Le due misure esatte le
+      genera scripts/optimize-images.mjs dal PNG a 2700px.
+    -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="apple-touch-icon" href="/logo3.png" />
+    <link rel="manifest" href="/site.webmanifest" />
 
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://atlasanatomy.github.io/" />
+    <meta property="og:site_name" content="Tommaso Bosi" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:title" content="Tommaso Bosi | CV" />
     <meta
       property="og:description"
@@ -38,6 +47,46 @@
     />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="https://atlasanatomy.github.io/og-image.jpg" />
+
+    <!--
+      Person invece di WebPage: la pagina è una persona, non un articolo, ed è
+      questo il tipo che Google usa per il pannello a lato. sameAs collega i
+      profili già elencati in src/constants, così il grafo li riconosce come
+      lo stesso soggetto.
+    -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Tommaso Bosi",
+        "url": "https://atlasanatomy.github.io/",
+        "image": "https://atlasanatomy.github.io/og-image.jpg",
+        "jobTitle": "Data Science & Automation Engineer",
+        "email": "mailto:bositommaso13@gmail.com",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Rome",
+          "addressCountry": "IT"
+        },
+        "alumniOf": {
+          "@type": "CollegeOrUniversity",
+          "name": "Roma Tre University, Department of Engineering"
+        },
+        "knowsAbout": [
+          "Operations research",
+          "Optimization algorithms",
+          "Simulation modelling",
+          "Railway timetabling",
+          "Public transport planning",
+          "Data science"
+        ],
+        "sameAs": [
+          "https://www.linkedin.com/in/tommaso-bosi-323073155/",
+          "https://github.com/AtlasAnatomy",
+          "https://linktr.ee/bositommaso"
+        ]
+      }
+    </script>
 
     <!--
       Lo sfondo dell'hero copre più superficie di qualsiasi altro elemento, quindi
