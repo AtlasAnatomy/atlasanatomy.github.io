@@ -13,8 +13,15 @@ const DRACO_PATH = '/draco/';
 
 // Posa per fascia di viewport. Il ramo desktop deve restare allineato a
 // scripts/render-poster.mjs, altrimenti il poster e il canvas non si sovrappongono.
+//
+// La y del ramo mobile è scesa da -1,2 a -1,6 per staccare il modello dal testo
+// dell'hero, che su mobile gli finiva praticamente addosso: da 10px di stacco a
+// 38 su un iPhone 12. Attenzione se la si ritocca: il modello si posiziona a una
+// percentuale fissa dell'altezza della sezione (cima al 51,5%, fondo al 68,1%),
+// mentre il testo parte da 140px fissi. Sui telefoni corti resta quindi
+// sovrapposto, e scendere ancora lo manderebbe addosso all'indicatore sotto.
 const POSE = {
-  mobile: { scale: 0.3, position: [0, -1.2, -0.5] },
+  mobile: { scale: 0.3, position: [0, -1.6, -0.5] },
   tablet: { scale: 0.5, position: [0, -1.8, -1] },
   laptop: { scale: 0.62, position: [0, -2.2, -1.3] },
   desktop: { scale: 0.7, position: [0, -2.5, -1.5] },

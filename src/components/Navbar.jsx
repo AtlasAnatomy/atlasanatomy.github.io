@@ -231,13 +231,28 @@ const Navbar = () => {
           open ? 'visible translate-x-0' : 'invisible translate-x-full'
         }`}
       >
-        <div className="flex items-center justify-end px-4 py-4">
+        {/* Chi sei a sinistra, come si esce a destra: il pannello copre la
+            navbar, e senza il logo si perderebbe il riferimento di dove si è. */}
+        <div className="flex items-center justify-between gap-3 px-4 py-4">
+          <div className="flex min-w-0 items-center gap-3">
+            <img
+              src={logo}
+              alt=""
+              width="36"
+              height="36"
+              className="h-9 w-9 shrink-0 object-contain"
+            />
+            <span className="truncate text-[15px] font-bold leading-tight text-white">
+              Tommaso Bosi
+            </span>
+          </div>
+
           <button
             ref={closeRef}
             type="button"
             aria-label="Close the menu"
             onClick={closeMenu}
-            className="grid place-items-center w-11 h-11 rounded-lg transition-colors duration-200 hover:bg-white/5"
+            className="grid shrink-0 place-items-center w-11 h-11 rounded-lg transition-colors duration-200 hover:bg-white/5"
           >
             <img
               src={close}
@@ -298,7 +313,7 @@ const Navbar = () => {
                     aria-label={name}
                     title={name}
                     onClick={closeMenu}
-                    className="grid place-items-center w-11 h-11 rounded-lg text-secondary transition-colors duration-200 hover:bg-white/5 hover:text-accent"
+                    className="grid place-items-center w-12 h-12 rounded-lg text-secondary transition-colors duration-200 hover:bg-white/5 hover:text-accent"
                   >
                     <Icon />
                   </a>

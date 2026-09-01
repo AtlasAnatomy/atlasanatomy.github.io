@@ -12,8 +12,8 @@
 
 const box = {
   viewBox: '0 0 24 24',
-  width: 20,
-  height: 20,
+  width: 26,
+  height: 26,
   'aria-hidden': 'true',
   focusable: 'false',
 };
@@ -39,15 +39,18 @@ export const GitHubIcon = () => (
 );
 
 /*
- * Ricostruito a mano, non è il file ufficiale del marchio: tronco, due rami
- * aperti e la traversa in basso. I rami sono lunghi e la traversa bassa perché
- * con rami corti il segno somigliava alla freccia di "carica un file".
+ * Tracciato ufficiale del marchio.
+ *
+ * Riempie la viewBox da bordo a bordo, mentre LinkedIn sta fra 3,3 e 20,5 e
+ * GitHub fra 2 e 22. Alla stessa misura sarebbe quindi sembrato più grosso
+ * degli altri due: la trasformazione lo rimappa da 0-24 a 2-22, cioè
+ * sull'ingombro di GitHub, così i tre marchi pesano uguale nella riga.
  */
 export const LinktreeIcon = () => (
-  <svg {...box} {...stroke}>
-    <path d="M12 3.6v16.8" />
-    <path d="M6.4 9.2 12 3.6l5.6 5.6" />
-    <path d="M4.6 14h14.8" />
+  <svg {...box} fill="currentColor">
+    <g transform="translate(2 2) scale(0.8333)">
+      <path d="m13.73635 5.85251 4.00467 -4.11665 2.3248 2.3808 -4.20064 4.00466h5.9085v3.30473h-5.9365l4.22865 4.10766 -2.3248 2.3338L12.0005 12.099l-5.74052 5.76852 -2.3248 -2.3248 4.22864 -4.10766h-5.9375V8.12132h5.9085L3.93417 4.11666l2.3248 -2.3808 4.00468 4.11665V0h3.4727zm-3.4727 10.30614h3.4727V24h-3.4727z" />
+    </g>
   </svg>
 );
 
