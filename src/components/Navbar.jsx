@@ -152,61 +152,72 @@ const Navbar = () => {
   }, [open]);
 
   return (
-    <nav
-      className={`${styles.paddingX} w-full flex items-center py-4 fixed top-0 z-30 transition-colors duration-300 ${
-        scrolled ? 'bg-primary/90 backdrop-blur-md border-b border-line-200' : 'bg-transparent'
-      }`}
-    >
-      <div className="w-full flex justify-between items-center max-w-7xl mx-auto gap-4">
-        <a
-          href="#top"
-          className="flex items-center gap-3 min-h-[44px] shrink-0"
-          onClick={(event) => {
-            event.preventDefault();
-            setActive('');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
-        >
-          <img src={logo} alt="" width="40" height="40" className="w-10 h-10 object-contain" />
-          <span className="text-white text-[15px] font-bold leading-tight">
-            Tommaso Bosi
-            <span className="hidden lg:block text-secondary text-[12px] font-medium tracking-wide">
-              IT Manager &amp; Developer
+    /*
+     * Il velo e il pannello sono fratelli del <nav>, non figli.
+     *
+     * Da scorrimento avviato la navbar prende backdrop-blur, e backdrop-filter
+     * crea un blocco contenitore per i discendenti position:fixed: dentro al
+     * <nav> il pannello si dimensionava sulla navbar invece che sul viewport e
+     * si apriva alto 76px invece di 610. Fuori, fixed torna a riferirsi allo
+     * schermo.
+     */
+    <>
+      <nav
+        className={`${styles.paddingX} w-full flex items-center py-4 fixed top-0 z-30 transition-colors duration-300 ${
+          scrolled ? 'bg-primary/90 backdrop-blur-md border-b border-line-200' : 'bg-transparent'
+        }`}
+      >
+        <div className="w-full flex justify-between items-center max-w-7xl mx-auto gap-4">
+          <a
+            href="#top"
+            className="flex items-center gap-3 min-h-[44px] shrink-0"
+            onClick={(event) => {
+              event.preventDefault();
+              setActive('');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+          >
+            <img src={logo} alt="" width="40" height="40" className="w-10 h-10 object-contain" />
+            <span className="text-white text-[15px] font-bold leading-tight">
+              Tommaso Bosi
+              <span className="hidden lg:block text-secondary text-[12px] font-medium tracking-wide">
+                IT Manager &amp; Developer
+              </span>
             </span>
-          </span>
-        </a>
+          </a>
 
-        <ul className="list-none hidden md:flex flex-row gap-8 lg:gap-10">
-          {navLinks.map((link) => (
-            <li key={link.id}>
-              {/* inline-flex + min-h-[44px] porta l'area cliccabile alla misura
-                  minima: il solo testo misurava 39x37. La voce attiva si
-                  distingue dal colore, senza sottolineature. */}
-              <a
-                href={`#${link.id}`}
-                aria-current={active === link.id ? 'true' : undefined}
-                className={`${
-                  active === link.id ? 'text-white' : 'text-secondary'
-                } inline-flex min-h-[44px] items-center text-[15px] font-medium transition-colors duration-200 hover:text-white`}
-              >
-                {link.title}
-              </a>
-            </li>
-          ))}
-        </ul>
+          <ul className="list-none hidden md:flex flex-row gap-8 lg:gap-10">
+            {navLinks.map((link) => (
+              <li key={link.id}>
+                {/* inline-flex + min-h-[44px] porta l'area cliccabile alla misura
+                    minima: il solo testo misurava 39x37. La voce attiva si
+                    distingue dal colore, senza sottolineature. */}
+                <a
+                  href={`#${link.id}`}
+                  aria-current={active === link.id ? 'true' : undefined}
+                  className={`${
+                    active === link.id ? 'text-white' : 'text-secondary'
+                  } inline-flex min-h-[44px] items-center text-[15px] font-medium transition-colors duration-200 hover:text-white`}
+                >
+                  {link.title}
+                </a>
+              </li>
+            ))}
+          </ul>
 
-        <button
-          ref={toggleRef}
-          type="button"
-          aria-expanded={open}
-          aria-controls="mobile-menu"
-          aria-label="Open the menu"
-          onClick={() => setOpen(true)}
-          className="md:hidden grid place-items-center w-11 h-11 -mr-2"
-        >
-          <img src={menu} alt="" width="24" height="24" className="w-6 h-6 object-contain" />
-        </button>
-      </div>
+          <button
+            ref={toggleRef}
+            type="button"
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            aria-label="Open the menu"
+            onClick={() => setOpen(true)}
+            className="md:hidden grid place-items-center w-11 h-11 -mr-2"
+          >
+            <img src={menu} alt="" width="24" height="24" className="w-6 h-6 object-contain" />
+          </button>
+        </div>
+      </nav>
 
       {/* Velo: scurisce e sfoca la pagina, e fa da bersaglio per chiudere. */}
       <div
@@ -323,7 +334,7 @@ const Navbar = () => {
           </ul>
         </div>
       </aside>
-    </nav>
+    </>
   );
 };
 
